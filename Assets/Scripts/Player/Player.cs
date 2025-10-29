@@ -1,13 +1,13 @@
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     public InputSystem_Actions inputSystem;
     private Rigidbody2D playerRb;
 
-    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private Vector2 moveInput;
     void Awake()
     {
         inputSystem = new InputSystem_Actions();
@@ -22,10 +22,14 @@ public class Player : MonoBehaviour
         inputSystem.Player.Disable();
     }
 
+    void Update()
+    {
+        moveInput = inputSystem.Player.Movement.ReadValue<Vector2>();
+    }
     void FixedUpdate()
     {
-        Vector2 movementInput = inputSystem.Player.Movement.ReadValue<Vector2>();
-        playerRb.linearVelocity = moveSpeed * movementInput;
+
+        playerRb.linearVelocity = moveSpeed * moveInput;
     }
 
 }
