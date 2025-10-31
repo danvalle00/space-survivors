@@ -8,8 +8,10 @@ public static class ShootStrategyFactory
         {
             case ShootStrategyType.Projectile:
                 return new ProjectileShootStrategy();
-            case ShootStrategyType.AOE:
-                return new AoeShootStrategy();
+            case ShootStrategyType.TargetedAOE:
+                return new TargetedAOEStrategy();
+            case ShootStrategyType.RandomAOE:
+                return new RandomAOEStrategy();
             case ShootStrategyType.FrontalCone:
                 return new FrontalConeStrategy();
             case ShootStrategyType.MeleeCircle:

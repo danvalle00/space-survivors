@@ -1,7 +1,7 @@
 
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     public InputSystem_Actions inputSystem;
     private Rigidbody2D playerRb;
@@ -32,5 +32,9 @@ public class Player : MonoBehaviour
         playerRb.linearVelocity = moveSpeed * moveInput;
     }
 
+    public void TakeDamage(float damageAmount)
+    {
+        // TODO - Implement damage logic here
+    }
 }
 

@@ -6,7 +6,7 @@ public class WeaponData : ScriptableObject
     [Header("Base Stats")]
     public string weaponName;
     public float baseDamage;
-    public float baseFireRate;
+    public float baseFireRate; // persecond
     public float baseRange;
 
     [Header("Projectile Settings")]
@@ -15,6 +15,7 @@ public class WeaponData : ScriptableObject
 
     [Header("Aoe Settings")]
     public float aoeRadius;
+    public float throwRange;
     public GameObject aoePrefab;
 
     [Header("Cone Settings")]
@@ -30,6 +31,7 @@ public enum ShootStrategyType
 {
     Projectile,
     MeleeCircle,
-    AOE,
+    TargetedAOE,
+    RandomAOE,
     FrontalCone,
 }
