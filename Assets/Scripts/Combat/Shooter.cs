@@ -69,4 +69,98 @@ public class Shooter : MonoBehaviour
         }
         return closestEnemy;
     }
+    private void OnDrawGizmos()
+    {
+        if (weaponData == null) return;
+
+        // Draw shooter position marker
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, 0.2f);
+
+        // Draw strategy-specific visualizations
+        switch (weaponData.shootStrategyType)
+        {
+            case ShootStrategyType.TargetedAOE:
+                DrawTargetedAOEGizmos();
+                break;
+            case ShootStrategyType.RandomAOE:
+                DrawRandomAOEGizmos();
+                break;
+            default:
+                // For other strategies, just show detection range
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(transform.position, weaponData.baseRange);
+                break;
+        }
+
+        // In Play mode, draw line to current target
+        if (Application.isPlaying)
+        {
+            Transform target = FindClosestEnemy();
+            if (target != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(transform.position, target.position);
+                Gizmos.DrawWireSphere(target.position, 0.3f);
+            }
+        }
+    }
+
+    private void DrawTargetedAOEGizmos()
+    {
+        // Throw range (detection range for finding target)
+        Gizmos.color = new Color(1f, 1f, 0f, 0.3f);
+        Gizmos.DrawWireSphere(transform.position, weaponData.baseRange);
+
+        Vector2 playerPos = (Vector2)transform.position;
+        Vector2 aoeCenter;
+
+        // In Play mode, show where the AOE lands on actual target
+        if (Application.isPlaying)
+        {
+            Transform target = FindClosestEnemy();
+            if (target != null)
+            {
+                aoeCenter = (Vector2)target.position;
+
+                // Draw line to target
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(transform.position, aoeCenter);
+            }
+            else
+            {
+                // No target, show preview at max range
+                aoeCenter = playerPos + (Vector2)transform.up * weaponData.baseRange;
+            }
+        }
+        else
+        {
+            // Edit mode: show preview at baseRange in forward direction
+            aoeCenter = playerPos + (Vector2)transform.up * weaponData.baseRange;
+        }
+
+        // Draw AOE blast radius
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(aoeCenter, weaponData.aoeRadius);
+    }
+
+    private void DrawRandomAOEGizmos()
+    {
+        // Throw range (where random AOEs can spawn)
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, weaponData.baseRange);
+
+        // Show sample AOE positions (4 examples around the player)
+        Gizmos.color = new Color(1f, 0f, 1f, 0.6f); // Magenta with transparency
+        for (int i = 0; i < 4; i++)
+        {
+            float angle = i * 90f;
+            float radians = angle * Mathf.Deg2Rad;
+            Vector2 offset = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * (weaponData.baseRange * 0.7f);
+            Vector2 samplePos = (Vector2)transform.position + offset;
+
+            // Draw sample AOE blast radius
+            Gizmos.DrawWireSphere(samplePos, weaponData.aoeRadius);
+        }
+    }
 }

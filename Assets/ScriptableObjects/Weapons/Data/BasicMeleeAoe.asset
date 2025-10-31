@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0f0be890a3d56674380f2cc15cd34670, type: 3}
-  m_Name: BasicProjectile
+  m_Name: BasicMeleeAoe
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: 
-  baseDamage: 50
-  baseFireRate: 1
-  baseRange: 8.78
-  projectileSpeed: 5
-  projectilePrefab: {fileID: 1919109177573773446, guid: 4589fb9701158b5478977b11cf77be6e, type: 3}
-  aoeRadius: 0
+  baseDamage: 0
+  baseFireRate: 0
+  baseRange: 0
+  projectileSpeed: 0
+  projectilePrefab: {fileID: 0}
+  aoeRadius: 5
   aoePrefab: {fileID: 0}
   coneAngle: 0
-  shootStrategyType: 0
+  shootStrategyType: 1
