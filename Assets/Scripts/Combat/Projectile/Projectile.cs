@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float damage;
     [SerializeField] private LayerMask targetLayer;
+    
 
     public void Initialize(Vector2 direction, float speed, float damage, LayerMask targetLayer)
     {

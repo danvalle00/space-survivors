@@ -4,18 +4,38 @@ public class ProjectileShootStrategy : IShootStrategy
 {
     public void Execute(ShootContext context)
     {
+        int quantity = context.weaponData.baseQuantity;
+        float spreadAngle = context.weaponData.spreadAngle;
         if (context.weaponData.projectilePrefab == null)
         {
             Debug.LogWarning("ProjectileShootStrategy: No projectile prefab assigned in WeaponData.");
             return;
         }
-        GameObject projectile = Object.Instantiate(context.weaponData.projectilePrefab, context.spawnPosition, Quaternion.identity);
-        Projectile projComponent = projectile.GetComponent<Projectile>();
-        if (projComponent == null)
+        for (int i = 0; i < quantity; i++)
         {
-            Debug.LogWarning("ProjectileShootStrategy: No Projectile component found on projectile prefab.");
-            return;
+            float angleOffset = (i - (quantity - 1) / 2f) * spreadAngle;
+            Vector2 modifiedDirection = RotateVector2D(angleOffset, context.direction);
+            GameObject projectile = Object.Instantiate(context.weaponData.projectilePrefab, context.spawnPosition, Quaternion.identity);
+            Projectile projComponent = projectile.GetComponent<Projectile>();
+            if (projComponent == null)
+            {
+                Debug.LogWarning("ProjectileShootStrategy: No Projectile component found on projectile prefab.");
+                return;
+            }
+            projComponent.Initialize(modifiedDirection, context.weaponData.projectileSpeed, context.weaponData.baseDamage, context.targetLayer);
+
         }
-        projComponent.Initialize(context.direction, context.weaponData.projectileSpeed, context.weaponData.baseDamage, context.targetLayer);
+    }
+    private Vector2 RotateVector2D(float spreadAngle, Vector2 originalVector)
+    {
+        // formula da matrix de rotacao: Xr = Xcosθ - Ysinθ; Yr = Xsinθ + Ycosθ
+        // vetor rotacionado = (Xr, Yr)
+        float radAngle = spreadAngle * Mathf.Deg2Rad;
+        float cosAngle = Mathf.Cos(radAngle);
+        float sinAngle = Mathf.Sin(radAngle);
+        float rotatedX = originalVector.x * cosAngle - originalVector.y * sinAngle;
+        float rotatedY = originalVector.x * sinAngle + originalVector.y * cosAngle;
+        Vector2 rotatedVector = new(rotatedX, rotatedY);
+        return rotatedVector;
     }
 }

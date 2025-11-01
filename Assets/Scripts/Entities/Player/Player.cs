@@ -34,8 +34,8 @@ public class Player : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damageAmount)
     {
-        // TODO - Implement damage logic here~
-        Debug.Log($"Player took {damageAmount} damage.");
+        // TODO - Implement damage logic here
+        
         
     }
 }

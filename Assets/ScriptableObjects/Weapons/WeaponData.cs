@@ -9,10 +9,14 @@ public class WeaponData : ScriptableObject
     public float baseDamage;
     public float baseFireRate;
     public float baseRange;
+    public int baseQuantity;
+    [Tooltip("Delay between projectiles when quantity > 1 in seconds")]
+    public float delayBetweenShots;
 
     [Header("Projectile Settings")]
     [Tooltip("Settings for projectile-based weapons")]
     public float projectileSpeed;
+    public float spreadAngle;
     public GameObject projectilePrefab;
 
     [Header("Aoe Settings")]
