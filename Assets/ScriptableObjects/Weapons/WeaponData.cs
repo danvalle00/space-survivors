@@ -27,6 +27,7 @@ public class WeaponData : ScriptableObject
     [Header("Cone Settings")]
     [Tooltip("Settings for frontal cone weapons")]
     public float coneAngle;
+    public GameObject conePrefab;
 
     [Header("Strategy")]
     public ShootStrategyType shootStrategyType;

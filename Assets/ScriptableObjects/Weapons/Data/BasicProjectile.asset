@@ -16,9 +16,13 @@ MonoBehaviour:
   baseDamage: 50
   baseFireRate: 1
   baseRange: 8.78
+  baseQuantity: 69
+  delayBetweenShots: 0
   projectileSpeed: 5
+  spreadAngle: 15
   projectilePrefab: {fileID: 1919109177573773446, guid: 4589fb9701158b5478977b11cf77be6e, type: 3}
   aoeRadius: 0
   aoePrefab: {fileID: 0}
   coneAngle: 0
+  conePrefab: {fileID: 0}
   shootStrategyType: 0

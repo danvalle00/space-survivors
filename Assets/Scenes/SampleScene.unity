@@ -533,7 +533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0a97980a98e31b4a8323cc1da7d8232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shooter
-  weaponData: {fileID: 11400000, guid: 47a4d565b5bef6b47a71e3546fd136b7, type: 2}
+  weaponData: {fileID: 11400000, guid: 3b7645753d886b040b444aad7e36bf4b, type: 2}
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -551,7 +551,6 @@ GameObject:
   - component: {fileID: 2098419858}
   - component: {fileID: 2098419857}
   - component: {fileID: 2098419861}
-  - component: {fileID: 2098419862}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -617,7 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5516bba0ac6c62a438cfee70c9331069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  health: 100
+  health: 10000
 --- !u!212 &2098419859
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -718,23 +717,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 6
---- !u!114 &2098419862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2098419856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0a97980a98e31b4a8323cc1da7d8232, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Shooter
-  weaponData: {fileID: 11400000, guid: 3bd18890455ab0d4c9b81261f725b456, type: 2}
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  shootPoint: {fileID: 2098419860}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

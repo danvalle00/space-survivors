@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: 
   baseDamage: 0
-  baseFireRate: 0
-  baseRange: 10
+  baseFireRate: 0.5
+  baseRange: 13.3
+  baseQuantity: 114
+  delayBetweenShots: 0
   projectileSpeed: 0
+  spreadAngle: 0
   projectilePrefab: {fileID: 0}
   aoeRadius: 0
   aoePrefab: {fileID: 0}
   coneAngle: 60
+  conePrefab: {fileID: 6682521165936313429, guid: ae58ee44d39260c48a9ae3f40c6388f4, type: 3}
   shootStrategyType: 4

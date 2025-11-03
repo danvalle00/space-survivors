@@ -8,7 +8,7 @@ public class Shooter : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform shootPoint;
     private IShootStrategy currentStrategy;
-    private IShootStrategy[] strategies;
+    private IShootStrategy[] strategies; 
     private WeaponData[] weapons;
     private float nextFireTime;
     void Start()
@@ -65,7 +65,7 @@ public class Shooter : MonoBehaviour
 
     private void ExecuteShoot(Vector3 targetPosition)
     {
-        Vector3 spawnPos = shootPoint != null ? shootPoint.position : transform.position;
+        Vector3 spawnPos = shootPoint != null ? shootPoint.position : transform.position; // esse shoot point pode ser a arma que tiver no ring magnetico ao redor da nave
         Vector3 direction = (targetPosition - spawnPos).normalized;
         ShootContext context = new()
         {
