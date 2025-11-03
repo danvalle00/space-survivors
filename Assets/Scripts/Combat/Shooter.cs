@@ -1,61 +1,71 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
     [Header("Configuration")]
-    [SerializeField] private WeaponData weaponData;
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform shootPoint;
-    private IShootStrategy currentStrategy;
-    private IShootStrategy[] strategies; 
-    private WeaponData[] weapons;
-    private float nextFireTime;
+
+    private readonly List<IShootStrategy> strategies = new();
+    [SerializeField] private List<WeaponData> weaponsData = new();
+    private readonly List<float> nextFireTimes = new();
+
     void Start()
     {
-        if (weaponData == null)
+        if (weaponsData == null || weaponsData.Count == 0)
         {
             Debug.LogError("Shooter: No WeaponData assigned.");
             return;
         }
-        EquipWeapon(weaponData);
+        EquipWeapons(weaponsData);
     }
-    void Update()
+    void Update() // manter shoot como atirar 1 arma e aqui eu faço o loop para todas as armas
     {
-        if (Time.time >= nextFireTime)
+
+        for (int i = 0; i < weaponsData.Count; i++)
         {
-            Transform targetEnemy = FindClosestEnemy();
-            if (targetEnemy != null)
+            if (Time.time >= nextFireTimes[i])
             {
-                Shoot(targetEnemy.position);
+                Transform targetEnemy = FindClosestEnemy(weaponsData[i].baseRange);
+                if (targetEnemy != null)
+                {
+
+                    Shoot(targetEnemy.position, i);
+                    Debug.Log("Shooter: Shooting with weapon " + weaponsData[i].weaponName);
+                    nextFireTimes[i] = Time.time + 1f / weaponsData[i].baseFireRate; //REVIEW - se vai estar atirando no tempo corrento
+                }
             }
+
         }
+
     }
-    public void Shoot(Vector3 targetPosition)
+    private void Shoot(Vector3 targetPosition, int weaponIndex)
     {
-        if (currentStrategy == null || weaponData == null)
+        if (strategies[weaponIndex] == null || weaponsData[weaponIndex] == null)
         {
             Debug.LogWarning("Shooter: No shooting strategy or weapon data assigned.");
             return;
         }
-        int quantity = weaponData.baseQuantity;
-        float delayBetweenShots = weaponData.delayBetweenShots;
+        int quantity = weaponsData[weaponIndex].baseQuantity;
+        float delayBetweenShots = weaponsData[weaponIndex].delayBetweenShots;
         if (quantity >= 1 && delayBetweenShots > 0f)
         {
-            StartCoroutine(ShootSequence(targetPosition, quantity, delayBetweenShots));
+            StartCoroutine(ShootSequence(targetPosition, quantity, delayBetweenShots, weaponIndex));
         }
         else // se for quantity > 1 mas delayBetweenShots == 0
         {
-            ExecuteShoot(targetPosition);
+            ExecuteShoot(targetPosition, weaponIndex);
         }
-        nextFireTime = Time.time + 1f / weaponData.baseFireRate;
+
     }
 
-    private IEnumerator ShootSequence(Vector3 targetPosition, int quantity, float delayBetweenShots)
+    private IEnumerator ShootSequence(Vector3 targetPosition, int quantity, float delayBetweenShots, int weaponIndex)
     {
         for (int i = 0; i < quantity; i++)
         {
-            ExecuteShoot(targetPosition);
+            ExecuteShoot(targetPosition, weaponIndex);
             if (i < quantity - 1) // evita esperar apos o ultimo tiro
             {
                 yield return new WaitForSeconds(delayBetweenShots);
@@ -63,7 +73,7 @@ public class Shooter : MonoBehaviour
         }
     }
 
-    private void ExecuteShoot(Vector3 targetPosition)
+    private void ExecuteShoot(Vector3 targetPosition, int weaponIndex)
     {
         Vector3 spawnPos = shootPoint != null ? shootPoint.position : transform.position; // esse shoot point pode ser a arma que tiver no ring magnetico ao redor da nave
         Vector3 direction = (targetPosition - spawnPos).normalized;
@@ -73,19 +83,25 @@ public class Shooter : MonoBehaviour
             spawnPosition = (Vector2)spawnPos,
             direction = (Vector2)direction,
             targetLayer = targetLayer,
-            weaponData = weaponData,
+            weaponData = weaponsData[weaponIndex],
             shooterTransform = transform
         };
-        currentStrategy.Execute(context);
+        strategies[weaponIndex].Execute(context);
     }
-    public void EquipWeapon(WeaponData weapon)
+    private void EquipWeapons(List<WeaponData> weapons)
     {
-        currentStrategy = ShootStrategyFactory.GetStrategy(weapon.shootStrategyType);
-        weaponData = weapon;
+        foreach (WeaponData weapon in weapons)
+        {
+            IShootStrategy strategy = ShootStrategyFactory.GetStrategy(weapon.shootStrategyType);
+            strategies.Add(strategy);
+            nextFireTimes.Add(0f); //NOTE -  just for initialization?
+
+        }
+
     }
-    private Transform FindClosestEnemy()
+    private Transform FindClosestEnemy(float weaponRange)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, weaponData.baseRange, targetLayer);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, weaponRange, targetLayer);
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;
         foreach (Collider2D collider in hitColliders)
