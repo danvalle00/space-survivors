@@ -31,10 +31,8 @@ public class Shooter : MonoBehaviour
                 Transform targetEnemy = FindClosestEnemy(weaponsData[i].baseRange);
                 if (targetEnemy != null)
                 {
-
                     Shoot(targetEnemy.position, i);
-                    Debug.Log("Shooter: Shooting with weapon " + weaponsData[i].weaponName);
-                    nextFireTimes[i] = Time.time + 1f / weaponsData[i].baseFireRate; //REVIEW - se vai estar atirando no tempo corrento
+                    nextFireTimes[i] = Time.time + 1f / weaponsData[i].baseFireRate;
                 }
             }
 
@@ -94,13 +92,13 @@ public class Shooter : MonoBehaviour
         {
             IShootStrategy strategy = ShootStrategyFactory.GetStrategy(weapon.shootStrategyType);
             strategies.Add(strategy);
-            nextFireTimes.Add(0f); //NOTE -  just for initialization?
-
+            nextFireTimes.Add(0f); 
         }
 
     }
     private Transform FindClosestEnemy(float weaponRange)
     {
+        // REVIEW - trocar OverlapCircleAll por OverlapCircleNonAlloc para performance 
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, weaponRange, targetLayer);
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;

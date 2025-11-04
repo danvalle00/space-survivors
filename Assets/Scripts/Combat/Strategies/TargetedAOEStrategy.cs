@@ -17,8 +17,6 @@ public class TargetedAOEStrategy : IShootStrategy
             IDamageable damageable = enemyCollider.GetComponent<IDamageable>();
             damageable.TakeDamage(context.weaponData.baseDamage);
         }
-        Debug.DrawLine(context.shooterTransform.position, enemyPos, Color.red, 1f);
-
     }
 
 }

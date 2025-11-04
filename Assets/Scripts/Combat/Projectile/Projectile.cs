@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float damage;
     [SerializeField] private LayerMask targetLayer;
-    
+
 
     public void Initialize(Vector2 direction, float speed, float damage, LayerMask targetLayer)
     {
@@ -15,7 +15,7 @@ public class Projectile : MonoBehaviour
         this.speed = speed;
         this.damage = damage;
         this.targetLayer = targetLayer;
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, 2f);
 
     }
 
