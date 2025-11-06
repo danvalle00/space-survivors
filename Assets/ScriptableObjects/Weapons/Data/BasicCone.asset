@@ -16,7 +16,7 @@ MonoBehaviour:
   baseDamage: 0
   baseFireRate: 0.5
   baseRange: 13.3
-  baseQuantity: 114
+  baseQuantity: 1
   delayBetweenShots: 0
   projectileSpeed: 0
   spreadAngle: 0
