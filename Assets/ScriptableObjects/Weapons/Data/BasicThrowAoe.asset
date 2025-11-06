@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: BasicThrowAoe
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: 
-  baseDamage: 0
-  baseFireRate: 2
-  baseRange: 8.56
+  baseDamage: 30
+  baseFireRate: 1
+  baseRange: 15
   baseQuantity: 1
   delayBetweenShots: 0
   projectileSpeed: 0
   spreadAngle: 0
   projectilePrefab: {fileID: 0}
-  aoeRadius: 5
+  aoeRadius: 3
   aoePrefab: {fileID: 5695820281465385623, guid: aad38d3c3a667e542ac2ebd9ebcbc381, type: 3}
   coneAngle: 0
   conePrefab: {fileID: 0}

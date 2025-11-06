@@ -57,7 +57,7 @@ public class EnemySpawner : MonoBehaviour
         enemyPerSpawn = Mathf.Min(5, 1 + Mathf.Floor(gameTime / 30)); // aumenta o numero de inimigos por spawn a cada 30 segundos max de 5
     }
         
-    private IEnumerator SpawnEnemy()
+    private IEnumerator SpawnEnemy() // REVIEW - qnd nasce mais de 1 inimigo, eles nascem em filinha um atras do outro
     {
         Vector2 spawnPosition = GetOffscreenSpawnPosition();
         int enemyIndex = Random.Range(0, enemyVariants.Length);
@@ -75,7 +75,7 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(spawnInterval);
         }
     }
-    private void SpawnBoss()
+    private void SpawnBoss() // REVIEW - currently not used
     {
         Vector2 spawnPosition = GetOffscreenSpawnPosition();
         int bossIndex = Random.Range(0, bossesVariants.Length);

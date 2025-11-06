@@ -15,8 +15,8 @@ MonoBehaviour:
   weaponName: 
   baseDamage: 50
   baseFireRate: 1
-  baseRange: 8.78
-  baseQuantity: 24
+  baseRange: 15
+  baseQuantity: 2
   delayBetweenShots: 0
   projectileSpeed: 5
   spreadAngle: 15

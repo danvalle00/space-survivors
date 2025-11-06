@@ -11,6 +11,7 @@ public class Shooter : MonoBehaviour
     private readonly List<IShootStrategy> strategies = new();
     [SerializeField] private List<WeaponData> weaponsData = new();
     private readonly List<float> nextFireTimes = new();
+    private List<float> delaysBetweenShots = new();
 
     void Start()
     {

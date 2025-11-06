@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BasicCone
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   weaponName: 
-  baseDamage: 0
-  baseFireRate: 0.5
-  baseRange: 13.3
+  baseDamage: 15
+  baseFireRate: 1
+  baseRange: 15
   baseQuantity: 1
   delayBetweenShots: 0
   projectileSpeed: 0
