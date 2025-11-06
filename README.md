@@ -1,5 +1,5 @@
 # space-survivors
-this is my third project that i'm doing in unity, learning more about c# and game development in general.
+this is my third project that i'm doing in unity, since i came back developing, learning more about c# and game development in general.
 the game is a top down survivor game where the player is a spacecraft fighting against alien creatures and bosses.
 ill try to keep this readme updated with the progress of the game and the features that i plan to implement. And ill also try to make devlogs about the development process.
 ## TODOS
