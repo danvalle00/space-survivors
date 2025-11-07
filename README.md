@@ -2,17 +2,17 @@
 this is my third project that i'm doing in unity, since i came back developing, learning more about c# and game development in general.
 the game is a top down survivor game where the player is a spacecraft fighting against alien creatures and bosses.
 ill try to keep this readme updated with the progress of the game and the features that i plan to implement. And ill also try to make devlogs about the development process.
-## TODOS
+
+## Features TODOS and Ideas
 ### Movement
 - ~~8D top down movement~~
 ### Shooting
 - Make a generic shoot function that handles:
-	- shoot towards the closest target
-    - handle multiple types of weapons (melee, ranged, etc)
-	- Shoot at the closest target (enemy or player if enemy)
+	- ~~shoot towards the closest target~~
+    - ~~handle multiple types of weapons (melee, ranged, etc)~~
+	- ~~Shoot at the closest target (enemy or player if enemy)~~
 	- Some weapons can be a frontal where the player is facing
-		- dont know how to handle it
-	- Can be used with the enemy to shoot his weapons
+	- ~~Can be used with the enemy to shoot his weapons~~
 ### In Game Upgrades / Persistent Upgrades:
 - Speed
 - Fire rate
@@ -27,9 +27,13 @@ ill try to keep this readme updated with the progress of the game and the featur
 - Gold, Xp, Difficulty
 - Skip, Banish and Sealing upgrades (Sealing is in the game collection)
 - ... (more)
-### Enemy Spawner
+### Spawning Enemies
+- ~~enemy spawner that spawns enemies offscreen at random positions~~
+- ~~spawn rate increases as time passes~~
+- ~~wave of enemies at certain time intervals~~
+- ~~boss spawns at certain time intervals~~
 - Increasing difficulty (Hp, Attack, Speed)
-- Limit of X enemy per screen (Increase the limit as the time pass?)
+- Limit of X enemy per screen (for now it spawn indefinitely)
 ### Enemy Variety
 (see warhammer 40k, starcraft for inspiration)
 - few aliens, robots or something technological looking
@@ -43,6 +47,8 @@ ill try to keep this readme updated with the progress of the game and the featur
 - different themes (laser, bullets, energy, etc)
 - different levels (upgrades)
 ### Weapons Inventory / Passive Items Inventory
+- ~~player can carry multiple weapons and they shoot independently~~~
+
 - weapon evolutions if the player has it passive item
 	- weapon must be max level
 ### Enemy Drops and Power Up spawns

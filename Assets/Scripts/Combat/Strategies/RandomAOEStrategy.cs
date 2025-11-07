@@ -13,7 +13,7 @@ public class RandomAOEStrategy : IShootStrategy
         {
             GameObject aoeInstance = Object.Instantiate(aoePrefab, AOECenter, Quaternion.identity);
             aoeInstance.transform.localScale = new Vector3(context.weaponData.aoeRadius * 2, context.weaponData.aoeRadius * 2);
-            Object.Destroy(aoeInstance, 2f); // tempo do sprite na tela
+            Object.Destroy(aoeInstance, 2f); // REVIEW - hardcoded destroy time ser baseado no tempo de animacao do AOE
         }
 
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(AOECenter, context.weaponData.aoeRadius, context.targetLayer);

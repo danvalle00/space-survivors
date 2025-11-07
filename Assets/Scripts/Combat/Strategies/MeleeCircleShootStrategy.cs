@@ -9,8 +9,6 @@ public class MeleeCircleShootStrategy : IShootStrategy
         {
             IDamageable damageable = enemyCollider.GetComponent<IDamageable>();
             damageable.TakeDamage(context.weaponData.baseDamage);
-            // se for null vai dar problema mas  
-            // n eh pra ter nulls aqui
         }
     }
 }

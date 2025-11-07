@@ -8,6 +8,7 @@ public class Player : MonoBehaviour, IDamageable
 
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Vector2 moveInput;
+    [SerializeField, Range(10f, 50f)] private float debugRange;
     void Awake()
     {
         inputSystem = new InputSystem_Actions();
@@ -34,9 +35,15 @@ public class Player : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damageAmount)
     {
-        // TODO - Implement damage logic here
-        
-        
+        // TODO - Implement taking damage logic here
+
+
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.purple;
+        Gizmos.DrawWireSphere(transform.position, debugRange);
     }
 }
 
