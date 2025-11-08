@@ -99,8 +99,9 @@ public class Shooter : MonoBehaviour
     }
     private Transform FindClosestEnemy(float weaponRange)
     {
-        // REVIEW - trocar OverlapCircleAll por OverlapCircleNonAlloc para performance 
+        // REVIEW - trocar OverlapCircleAll por OverlapCircle para performance 
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, weaponRange, targetLayer);
+        
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;
         foreach (Collider2D collider in hitColliders)

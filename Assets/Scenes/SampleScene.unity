@@ -378,8 +378,6 @@ MonoBehaviour:
   spawnRateIncrease: 0.05
   maxSpawnRate: 0.25
   gameTime: 0
-  bossSpawnInterval: 15
-  waveSpawnInterval: 10
   spawnInterval: 2
   mainCamera: {fileID: 519420031}
 --- !u!4 &823060158
@@ -432,6 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   moveSpeed: 5
   moveInput: {x: 0, y: 0}
+  debugRange: 15
 --- !u!50 &1514427963
 Rigidbody2D:
   serializedVersion: 5
@@ -572,7 +571,7 @@ Transform:
   m_GameObject: {fileID: 1514427961}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.9, y: -5.2, z: 0}
+  m_LocalPosition: {x: 4.2, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -599,6 +598,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3bd18890455ab0d4c9b81261f725b456, type: 2}
   - {fileID: 11400000, guid: 55bdc90f5732141428d43c278b50873f, type: 2}
   - {fileID: 11400000, guid: 47a4d565b5bef6b47a71e3546fd136b7, type: 2}
+  - {fileID: 11400000, guid: 3bd18890455ab0d4c9b81261f725b456, type: 2}
+  - {fileID: 11400000, guid: 3bd18890455ab0d4c9b81261f725b456, type: 2}
 --- !u!1001 &4562449970389201121
 PrefabInstance:
   m_ObjectHideFlags: 0
