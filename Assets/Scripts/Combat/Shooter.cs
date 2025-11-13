@@ -8,10 +8,9 @@ public class Shooter : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform shootPoint;
 
-    private readonly List<IShootStrategy> strategies = new();
+    private readonly SpaceshipData spaceship;
+    [SerializeField] private readonly List<WeaponSlot> weaponsSlots = new(6);
     [SerializeField] private List<WeaponData> weaponsData = new();
-    private readonly List<float> nextFireTimes = new();
-    private List<float> delaysBetweenShots = new();
 
     void Start()
     {
@@ -25,33 +24,32 @@ public class Shooter : MonoBehaviour
     void Update() // manter shoot como atirar 1 arma e aqui eu faço o loop para todas as armas
     {
 
-        for (int i = 0; i < weaponsData.Count; i++)
+        for (int i = 0; i < weaponsSlots.Count; i++)
         {
-            if (Time.time >= nextFireTimes[i])
+            WeaponSlot index = weaponsSlots[i];
+            if (Time.time >= index.nextFireTime)
             {
-                Transform targetEnemy = FindClosestEnemy(weaponsData[i].baseRange);
+                Transform targetEnemy = FindClosestEnemy(index.data.baseRange);
                 if (targetEnemy != null)
                 {
-                    Shoot(targetEnemy.position, i);
-                    nextFireTimes[i] = Time.time + 1f / weaponsData[i].baseFireRate;
+                    Shoot(targetEnemy.position, index);
+                    index.nextFireTime = Time.time + 1f / index.data.baseFireRate;
                 }
             }
 
         }
 
     }
-    private void Shoot(Vector3 targetPosition, int weaponIndex)
+    private void Shoot(Vector3 targetPosition, WeaponSlot weaponIndex)
     {
-        if (strategies[weaponIndex] == null || weaponsData[weaponIndex] == null)
+        if (weaponIndex.strategy == null || weaponIndex.data == null)
         {
             Debug.LogWarning("Shooter: No shooting strategy or weapon data assigned.");
             return;
         }
-        int quantity = weaponsData[weaponIndex].baseQuantity;
-        float delayBetweenShots = weaponsData[weaponIndex].delayBetweenShots;
-        if (quantity >= 1 && delayBetweenShots > 0f)
+        if (weaponIndex.instance.baseQuantity >= 1 && weaponIndex.instance.delayBetweenShots > 0f)
         {
-            StartCoroutine(ShootSequence(targetPosition, quantity, delayBetweenShots, weaponIndex));
+            StartCoroutine(ShootSequence(targetPosition, weaponIndex));
         }
         else // se for quantity > 1 mas delayBetweenShots == 0
         {
@@ -60,19 +58,19 @@ public class Shooter : MonoBehaviour
 
     }
 
-    private IEnumerator ShootSequence(Vector3 targetPosition, int quantity, float delayBetweenShots, int weaponIndex)
+    private IEnumerator ShootSequence(Vector3 targetPosition, WeaponSlot weaponIndex)
     {
-        for (int i = 0; i < quantity; i++)
+        for (int i = 0; i < weaponIndex.instance.baseQuantity; i++)
         {
             ExecuteShoot(targetPosition, weaponIndex);
-            if (i < quantity - 1) // evita esperar apos o ultimo tiro
+            if (i < weaponIndex.instance.baseQuantity - 1) // evita esperar apos o ultimo tiro
             {
-                yield return new WaitForSeconds(delayBetweenShots);
+                yield return new WaitForSeconds(weaponIndex.instance.delayBetweenShots);
             }
         }
     }
 
-    private void ExecuteShoot(Vector3 targetPosition, int weaponIndex)
+    private void ExecuteShoot(Vector3 targetPosition, WeaponSlot weaponIndex)
     {
         Vector3 spawnPos = shootPoint != null ? shootPoint.position : transform.position; // esse shoot point pode ser a arma que tiver no ring magnetico ao redor da nave
         Vector3 direction = (targetPosition - spawnPos).normalized;
@@ -82,26 +80,33 @@ public class Shooter : MonoBehaviour
             spawnPosition = (Vector2)spawnPos,
             direction = (Vector2)direction,
             targetLayer = targetLayer,
-            weaponData = weaponsData[weaponIndex],
+            weaponInstance = weaponIndex.instance,
             shooterTransform = transform
         };
-        strategies[weaponIndex].Execute(context);
+
+        weaponIndex.strategy.Execute(context);
     }
-    private void EquipWeapons(List<WeaponData> weapons)
+    private void EquipWeapons(List<WeaponData> weaponsTemplates)
     {
-        foreach (WeaponData weapon in weapons)
+        foreach (WeaponData weapon in weaponsTemplates)
         {
-            IShootStrategy strategy = ShootStrategyFactory.GetStrategy(weapon.shootStrategyType);
-            strategies.Add(strategy);
-            nextFireTimes.Add(0f); 
+            WeaponSlot slot = new()
+            {
+                data = weapon,
+                instance = new WeaponInstance(weapon), // TODO - colocar a spaceship como parametro para pegar os upgrades
+                strategy = ShootStrategyFactory.GetStrategy(weapon.shootStrategyType),
+                nextFireTime = 0f
+            };
+            weaponsSlots.Add(slot);
         }
+
 
     }
     private Transform FindClosestEnemy(float weaponRange)
     {
         // REVIEW - trocar OverlapCircleAll por OverlapCircle para performance 
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, weaponRange, targetLayer);
-        
+
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;
         foreach (Collider2D collider in hitColliders)

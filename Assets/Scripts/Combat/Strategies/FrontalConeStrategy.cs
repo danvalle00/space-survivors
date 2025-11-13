@@ -4,9 +4,9 @@ public class FrontalConeStrategy : IShootStrategy
 {
     public void Execute(ShootContext context)
     {
-        float halfConeAngleDegrees = context.weaponData.coneAngle / 2f;
+        float halfConeAngleDegrees = context.weaponInstance.coneAngle / 2f;
         float dotThreshold = Mathf.Cos(halfConeAngleDegrees * Mathf.Deg2Rad);
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(context.shooterTransform.position, context.weaponData.baseRange, context.targetLayer);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(context.shooterTransform.position, context.weaponInstance.baseRange, context.targetLayer);
 
         foreach (Collider2D enemyCollider in hitColliders)
         {
@@ -15,7 +15,7 @@ public class FrontalConeStrategy : IShootStrategy
             if (dotProduct >= dotThreshold)
             {
                 IDamageable damageable = enemyCollider.GetComponent<IDamageable>();
-                damageable.TakeDamage(context.weaponData.baseDamage);
+                damageable.TakeDamage(context.weaponInstance.baseDamage);
             }
         }
 

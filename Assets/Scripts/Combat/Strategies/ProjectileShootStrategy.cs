@@ -4,9 +4,10 @@ public class ProjectileShootStrategy : IShootStrategy
 {
     public void Execute(ShootContext context)
     {
-        int quantity = context.weaponData.baseQuantity;
-        float spreadAngle = context.weaponData.spreadAngle;
-        if (context.weaponData.projectilePrefab == null)
+        int quantity = context.weaponInstance.baseQuantity;
+        float spreadAngle = context.weaponInstance.spreadAngle;
+        GameObject projectilePrefab = context.weaponInstance.weaponData.projectilePrefab;
+        if (projectilePrefab == null)
         {
             Debug.LogWarning("ProjectileShootStrategy: No projectile prefab assigned in WeaponData.");
             return;
@@ -15,14 +16,14 @@ public class ProjectileShootStrategy : IShootStrategy
         {
             float angleOffset = (i - (quantity - 1) / 2f) * spreadAngle;
             Vector2 modifiedDirection = RotateVector2D(angleOffset, context.direction);
-            GameObject projectile = Object.Instantiate(context.weaponData.projectilePrefab, context.spawnPosition, Quaternion.identity);
+            GameObject projectile = Object.Instantiate(projectilePrefab, context.spawnPosition, Quaternion.identity);
             Projectile projComponent = projectile.GetComponent<Projectile>();
             if (projComponent == null)
             {
                 Debug.LogWarning("ProjectileShootStrategy: No Projectile component found on projectile prefab.");
                 return;
             }
-            projComponent.Initialize(modifiedDirection, context.weaponData.projectileSpeed, context.weaponData.baseDamage, context.targetLayer);
+            projComponent.Initialize(modifiedDirection, context.weaponInstance.projectileSpeed, context.weaponInstance.baseDamage, context.targetLayer);
 
         }
     }
