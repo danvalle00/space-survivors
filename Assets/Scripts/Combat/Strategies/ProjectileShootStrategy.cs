@@ -16,9 +16,8 @@ public class ProjectileShootStrategy : IShootStrategy
         {
             float angleOffset = (i - (quantity - 1) / 2f) * spreadAngle;
             Vector2 modifiedDirection = RotateVector2D(angleOffset, context.direction);
-            GameObject projectile = Object.Instantiate(projectilePrefab, context.spawnPosition, Quaternion.identity);
-            Projectile projComponent = projectile.GetComponent<Projectile>();
-            if (projComponent == null)
+            GameObject projectile = ObjectPoolManager.SpawnObject(projectilePrefab, context.spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Projectiles);
+            if (!projectile.TryGetComponent<Projectile>(out var projComponent))
             {
                 Debug.LogWarning("ProjectileShootStrategy: No Projectile component found on projectile prefab.");
                 return;

@@ -31,7 +31,7 @@ public class EnemySpawner : MonoBehaviour
     private float cameraHeight;
     private float cameraWidth;
     private float minSpawnDistance;
-    private int currentEnemyCount;
+    [SerializeField] private int currentEnemyCount;
     [SerializeField, Range(1, 5000)] private int maxEnemyCount = 50;
 
     void OnEnable()
@@ -69,23 +69,26 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemy() // REVIEW - qnd nasce mais de 1 inimigo, eles nascem em filinha um atras do outro
     {
-        if (currentEnemyCount >= maxEnemyCount)
-        {
-            yield break;
-        }
+
         Vector2 spawnPosition = GetOffscreenSpawnPosition();
         int enemyIndex = Random.Range(0, enemyVariants.Length);
         float difficultyMod = DifficultyManager.Instance.GetCurrentDifficultyMultiplier();
         for (int i = 0; i < enemyPerSpawn; i++)
         {
+            if (currentEnemyCount >= maxEnemyCount)
+            {
+                yield break;
+            }
             yield return _enemySpawnStagger; // small delay between spawns (tried to prevent lag spike)
             GameObject enemyObj = ObjectPoolManager.SpawnObject(enemyVariants[enemyIndex], spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Enemies);
-            
-            if (enemyObj.TryGetComponent(out Enemy enemy))
+
+            if (!enemyObj.TryGetComponent(out Enemy enemy))
             {
-                enemy.Initialize(difficultyMod);
-                currentEnemyCount++;
+                Debug.LogWarning("EnemySpawner: Spawned object does not have an Enemy component.");
+                yield break;
             }
+            enemy.Initialize(difficultyMod);
+            currentEnemyCount++;
         }
     }
 

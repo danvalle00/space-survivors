@@ -114,9 +114,8 @@ public class ObjectPoolManager : MonoBehaviour
             return obj as T;
         }
 
-        T component = obj.GetComponent<T>();
-
-        if (component == null)
+        
+        if (!obj.TryGetComponent(out T component))
         {
             Debug.LogWarning("ObjectPoolManager: The spawned object does not have the requested component.");
         }
