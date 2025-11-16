@@ -106,10 +106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5516bba0ac6c62a438cfee70c9331069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  health: 100
-  playerTransform: {fileID: 0}
-  playerDir: {x: 0, y: 0}
+  enemyData: {fileID: 11400000, guid: c3cfeb676f26c36449eacc5e8d04a3aa, type: 2}
+  maxHealth: 0
   speed: 5
+  contactDamage: 0
+  currentHealth: 0
 --- !u!50 &3600475892372231116
 Rigidbody2D:
   serializedVersion: 5

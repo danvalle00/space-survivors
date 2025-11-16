@@ -11,7 +11,7 @@ public class WeaponInstance
     public float coneAngle;
     public float spreadAngle;
 
-    /* public WeaponInstance(WeaponData weaponData, SpaceshipData spaceship)
+    public WeaponInstance(WeaponData weaponData, SpaceshipData spaceship)
     {
         this.weaponData = weaponData;
         delayBetweenShots = weaponData.delayBetweenShots;
@@ -23,7 +23,7 @@ public class WeaponInstance
         aoeRadius = weaponData.aoeRadius * (1 + spaceship.shipIncreasedArea / 100f);
         coneAngle = weaponData.coneAngle * (1 + spaceship.shipIncreasedArea / 100f);
         spreadAngle = weaponData.spreadAngle;
-    } */
+    } 
     public WeaponInstance(WeaponData weaponData)
     {
         this.weaponData = weaponData;

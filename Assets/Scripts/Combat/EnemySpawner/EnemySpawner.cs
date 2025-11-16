@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private static readonly WaitForSeconds _enemySpawnStagger = new(0.05f);
-    //NOTE - these intervals can be adjusted as needed
+    private static readonly WaitForSeconds _enemySpawnStagger = new(0.05f); //NOTE - these intervals can be adjusted as needed
     private static readonly WaitForSeconds _bossSpawnInterval = new(300f); // 5 minutes
     private static readonly WaitForSeconds _waveSpawnInterval = new(30f); // 30 seconds
 
@@ -12,10 +11,13 @@ public class EnemySpawner : MonoBehaviour
     [Header("Enemy Spawning Settings")]
     [Tooltip("Array of enemy prefabs to spawn from this specific level")]
     [SerializeField] private GameObject[] enemyVariants;
+
     [Tooltip("Array of bosses prefabs to spawn from this specific level")]
     [SerializeField] private GameObject[] bossesVariants;
+
     [SerializeField] private float spawnRateIncrease = 0.05f;
     [SerializeField] private float maxSpawnRate = 0.25f;
+
     private float enemyPerSpawn;
     private int enemyInWave = 20;
 
@@ -23,13 +25,23 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float gameTime;
     [SerializeField] private float spawnInterval = 2f;
 
+
     [Header("Spawn Zone Settings")]
     [SerializeField] private Camera mainCamera;
     private float cameraHeight;
     private float cameraWidth;
     private float minSpawnDistance;
+    private int currentEnemyCount;
+    [SerializeField, Range(1, 5000)] private int maxEnemyCount = 50;
 
-
+    void OnEnable()
+    {
+        Enemy.OnEnemyDied += DecrementCount;
+    }
+    void OnDisable()
+    {
+        Enemy.OnEnemyDied -= DecrementCount;
+    }
     void Awake()
     {
         mainCamera = Camera.main;
@@ -57,15 +69,27 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnEnemy() // REVIEW - qnd nasce mais de 1 inimigo, eles nascem em filinha um atras do outro
     {
+        if (currentEnemyCount >= maxEnemyCount)
+        {
+            yield break;
+        }
         Vector2 spawnPosition = GetOffscreenSpawnPosition();
         int enemyIndex = Random.Range(0, enemyVariants.Length);
+        float difficultyMod = DifficultyManager.Instance.GetCurrentDifficultyMultiplier();
         for (int i = 0; i < enemyPerSpawn; i++)
         {
             yield return _enemySpawnStagger; // small delay between spawns (tried to prevent lag spike)
-            ObjectPoolManager.SpawnObject(enemyVariants[enemyIndex], spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Enemies);
+            GameObject enemyObj = ObjectPoolManager.SpawnObject(enemyVariants[enemyIndex], spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Enemies);
+            
+            if (enemyObj.TryGetComponent(out Enemy enemy))
+            {
+                enemy.Initialize(difficultyMod);
+                currentEnemyCount++;
+            }
         }
-
     }
+
+
     private IEnumerator EnemySpawnLoop()
     {
         while (true)
@@ -121,7 +145,10 @@ public class EnemySpawner : MonoBehaviour
         return centerPos + spawnOffset;
     }
 
-
+    private void DecrementCount()
+    {
+        currentEnemyCount--;
+    }
 }
 
 

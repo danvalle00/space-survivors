@@ -93,7 +93,7 @@ public class Shooter : MonoBehaviour
             WeaponSlot slot = new()
             {
                 data = weapon,
-                instance = new WeaponInstance(weapon), // TODO - colocar a spaceship como parametro para pegar os upgrades
+                instance = spaceship ? new WeaponInstance(weapon, spaceship) : new WeaponInstance(weapon),
                 strategy = ShootStrategyFactory.GetStrategy(weapon.shootStrategyType),
                 nextFireTime = 0f
             };

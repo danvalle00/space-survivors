@@ -42,7 +42,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         // constructor da ObjectPool
         ObjectPool<GameObject> newPool = new(
-            createFunc: () => CreateObject(prefab, pos, rotation, poolType),
+            createFunc: () => CreateObject(prefab, pos, rotation, poolType), // REVIEW - mexer nessa inicializacao com pos e rotation
             actionOnGet: OnGetObject,
             actionOnRelease: OnReleaseObject,
             actionOnDestroy: OnDestroyObject
@@ -128,10 +128,12 @@ public class ObjectPoolManager : MonoBehaviour
         return SpawnObject<T>(typePrefab.gameObject, pos, rotation, poolType);
     }
 
+
     public static GameObject SpawnObject(GameObject objectToSpawn, Vector3 pos, Quaternion rotation, PoolType poolType = PoolType.Enemies)
     {
         return SpawnObject<GameObject>(objectToSpawn, pos, rotation, poolType);
     }
+
 
     public static void ReturnToPool(GameObject obj, PoolType poolType = PoolType.Enemies)
     {

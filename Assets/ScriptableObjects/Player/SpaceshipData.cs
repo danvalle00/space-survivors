@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SpaceshipData", menuName = "Scriptable Objects/Spaceship")]
+[CreateAssetMenu(fileName = "New Spaceship", menuName = "Spaceships/SpaceshipData")]
 public class SpaceshipData : ScriptableObject
 {
     [Header("Spaceship Info")]
