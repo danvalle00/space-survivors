@@ -19,7 +19,7 @@ public class SpaceshipData : ScriptableObject
     [Tooltip("Combat-related stats for the spaceship")]
     public float shipCritChance;
     public float shipCritDamage;
-    public float shipIncreasedArea; // NOTE - affects AOE radius e cone angle
+    public float shipIncreasedArea; // NOTE - affects AOE radius e cone angle e o baseRange do cone tbm
     public float shipIncreasedFireRate;
     public float shipIncreasedProjectileSpeed;
     public int shipIncreasedQuantity;

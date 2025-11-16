@@ -30,10 +30,15 @@ public class Enemy : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damageAmount)
     {
+        if (!gameObject.activeInHierarchy) 
+        {
+            return;
+        }
+
         health -= damageAmount;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            ObjectPoolManager.ReturnToPool(this.gameObject, ObjectPoolManager.PoolType.Enemies);
         }
     }
 

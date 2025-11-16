@@ -1,5 +1,3 @@
-
-
 public class WeaponInstance
 {
     public WeaponData weaponData; // template

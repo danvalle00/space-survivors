@@ -111,6 +111,11 @@ public class Shooter : MonoBehaviour
         float closestDistance = Mathf.Infinity;
         foreach (Collider2D collider in hitColliders)
         {
+            if (!collider.gameObject.activeInHierarchy) // ← Add this check
+            {
+                Debug.Log($"WARNING: Found inactive enemy {collider.gameObject.name} in targeting!");
+                continue; // Skip inactive enemies
+            }
             float distance = Vector2.Distance(transform.position, collider.transform.position);
             if (distance < closestDistance)
             {

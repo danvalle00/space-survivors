@@ -41,8 +41,8 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         StartCoroutine(EnemySpawnLoop());
-        StartCoroutine(WaveSpawnLoop());
-        StartCoroutine(BossSpawnLoop());
+        // StartCoroutine(WaveSpawnLoop());
+        // StartCoroutine(BossSpawnLoop());
     }
 
     void Update()
@@ -62,8 +62,9 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < enemyPerSpawn; i++)
         {
             yield return _enemySpawnStagger; // small delay between spawns (tried to prevent lag spike)
-            Instantiate(enemyVariants[enemyIndex], spawnPosition, Quaternion.identity);
+            ObjectPoolManager.SpawnObject(enemyVariants[enemyIndex], spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Enemies);
         }
+
     }
     private IEnumerator EnemySpawnLoop()
     {
