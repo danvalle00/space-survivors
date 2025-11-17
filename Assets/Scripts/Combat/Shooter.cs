@@ -8,10 +8,9 @@ public class Shooter : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform shootPoint;
 
-    private readonly SpaceshipData spaceship;
     [SerializeField] private readonly List<WeaponSlot> weaponsSlots = new(6);
     [SerializeField] private List<WeaponData> weaponsData = new();
-
+    private bool isPlayer = false;
     void Start()
     {
         if (weaponsData == null || weaponsData.Count == 0)
@@ -19,8 +18,14 @@ public class Shooter : MonoBehaviour
             Debug.LogError("Shooter: No WeaponData assigned.");
             return;
         }
+        Debug.Log("Shooter: This shooter is tagged as " + this.tag + ", setting isPlayer to true.");
+        if (this.CompareTag("Player"))
+        {
+            isPlayer = true;
+        }
         EquipWeapons(weaponsData);
     }
+
     void Update() // manter shoot como atirar 1 arma e aqui eu faço o loop para todas as armas
     {
 
@@ -93,7 +98,7 @@ public class Shooter : MonoBehaviour
             WeaponSlot slot = new()
             {
                 data = weapon,
-                instance = spaceship ? new WeaponInstance(weapon, spaceship) : new WeaponInstance(weapon),
+                instance = new WeaponInstance(weapon, isPlayer),
                 strategy = ShootStrategyFactory.GetStrategy(weapon.shootStrategyType),
                 nextFireTime = 0f
             };

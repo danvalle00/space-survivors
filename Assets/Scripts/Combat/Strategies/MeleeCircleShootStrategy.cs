@@ -5,10 +5,11 @@ public class MeleeCircleShootStrategy : IShootStrategy
     public void Execute(ShootContext context)
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(context.shooterTransform.position, context.weaponInstance.baseRange, context.targetLayer); // um circulo ao redor to player
+        float damage = context.weaponInstance.RollDamage();
         foreach (Collider2D enemyCollider in hitColliders)
         {
             IDamageable damageable = enemyCollider.GetComponent<IDamageable>();
-            damageable.TakeDamage(context.weaponInstance.baseDamage);
+            damageable.TakeDamage(damage);
         }
     }
 }

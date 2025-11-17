@@ -12,13 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0be890a3d56674380f2cc15cd34670, type: 3}
   m_Name: BasicMeleeAoe
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  weaponName: 
+  weaponName: Basic Melee
+  weaponDescription: 
+  weaponIcon: {fileID: 0}
   baseDamage: 0
   baseFireRate: 0
   baseRange: 0
+  baseQuantity: 0
+  delayBetweenShots: 0
   projectileSpeed: 0
+  spreadAngle: 0
   projectilePrefab: {fileID: 0}
   aoeRadius: 5
   aoePrefab: {fileID: 0}
   coneAngle: 0
+  conePrefab: {fileID: 0}
   shootStrategyType: 1

@@ -1,8 +1,13 @@
+using UnityEngine;
+
 public class WeaponInstance
 {
-    public WeaponData weaponData; // template
+    public WeaponData weaponData;
+    public PlayerStatsInstance PlayerStats => GameManager.Instance != null ? GameManager.Instance.PlayerStatsInstance : null;
     public float delayBetweenShots;
     public float baseDamage;
+    public float critChance;
+    public float critDamage;
     public float baseFireRate;
     public float baseRange;
     public int baseQuantity;
@@ -11,20 +16,43 @@ public class WeaponInstance
     public float coneAngle;
     public float spreadAngle;
 
-    public WeaponInstance(WeaponData weaponData, SpaceshipData spaceship)
+    public WeaponInstance(WeaponData weaponData, bool isPlayer)
+    {
+        if (isPlayer)
+        {
+            InitializeAsPlayerWeapon(weaponData);
+            return;
+        }
+        InitializeWeaponInstance(weaponData);
+
+    }
+
+    public float RollDamage()
+    {
+        bool isCrit = Random.value <= critChance;
+        if (isCrit)
+        {
+            Debug.Log("Critical Hit! " + critDamage + "x damage.");
+            return baseDamage * critDamage;
+        }
+        return baseDamage;
+    }
+    private void InitializeAsPlayerWeapon(WeaponData weaponData)
     {
         this.weaponData = weaponData;
         delayBetweenShots = weaponData.delayBetweenShots;
-        baseDamage = weaponData.baseDamage * (1 + spaceship.shipIncreasedDamage / 100f);
-        baseFireRate = weaponData.baseFireRate * (1 + spaceship.shipIncreasedFireRate / 100f);
+        baseDamage = weaponData.baseDamage * PlayerStats.damage;
+        critChance = PlayerStats.critChance;
+        critDamage = PlayerStats.critDamage;
+        baseFireRate = weaponData.baseFireRate * PlayerStats.fireRate;
         baseRange = weaponData.baseRange;
-        baseQuantity = weaponData.baseQuantity + spaceship.shipIncreasedQuantity;
-        projectileSpeed = weaponData.projectileSpeed * (1 + spaceship.shipIncreasedProjectileSpeed / 100f);
-        aoeRadius = weaponData.aoeRadius * (1 + spaceship.shipIncreasedArea / 100f);
-        coneAngle = weaponData.coneAngle * (1 + spaceship.shipIncreasedArea / 100f);
+        baseQuantity = weaponData.baseQuantity + PlayerStats.quantity;
+        projectileSpeed = weaponData.projectileSpeed * PlayerStats.projectileSpeed;
+        aoeRadius = weaponData.aoeRadius * PlayerStats.area;
+        coneAngle = weaponData.coneAngle * PlayerStats.area;
         spreadAngle = weaponData.spreadAngle;
-    } 
-    public WeaponInstance(WeaponData weaponData)
+    }
+    private void InitializeWeaponInstance(WeaponData weaponData) // for enemies
     {
         this.weaponData = weaponData;
         delayBetweenShots = weaponData.delayBetweenShots;

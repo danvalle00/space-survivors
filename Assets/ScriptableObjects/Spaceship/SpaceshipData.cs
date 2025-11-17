@@ -3,7 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Spaceship", menuName = "Spaceships/SpaceshipData")]
 public class SpaceshipData : ScriptableObject
 {
-    [Header("Spaceship Info")]
+    [Header("Spaceship Template Data")]
+    [Header("Spaceship Description")] // REVIEW - DEFINIR SE TEM MAIS, SE É MULTIPLICADORES OU FLAT / SOBRE PREFAB OU SPRITES, SOUNDS VFX ETC
+    // esses dados sao a base do ship, o player persistent data e os upgrades vao modificar esses valores
+    // entao o crit change tem que ser por exemplo 5% base no ship e o player persistent data pode aumentar isso em 1.2x por exemplo
     [Tooltip("Basic information about the spaceship")]
     public string shipName;
     public string shipDescription;
@@ -13,7 +16,7 @@ public class SpaceshipData : ScriptableObject
     [Tooltip("Stats that define the spaceship's capabilities")]
     public float shipMaxHp;
     public float shipHpRegen;
-    public float shipArmor;
+    public int shipArmor;
     public float shipSpeed;
     [Header("Spaceship Combat Stats")]
     [Tooltip("Combat-related stats for the spaceship")]
@@ -28,10 +31,10 @@ public class SpaceshipData : ScriptableObject
     public float shipLifesteal;
 
     [Header("Spaceship Point Stats")]
-    [Tooltip("Currency, Xp or Gold stats for the spaceship")]
+    [Tooltip("Currency, Xp or Difficulty stats for the spaceship")]
     public float shipXpMultiplier;
-    public float shipGoldMultiplier;
-    public float shipPointMultiplier; // out of game currency (buy persistent upgrades)
+    public float shipDifficultyMultiplier;
+    public float shipCurrencyMultiplier;
 
 
 }

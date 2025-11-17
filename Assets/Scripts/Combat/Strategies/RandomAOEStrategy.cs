@@ -13,7 +13,7 @@ public class RandomAOEStrategy : IShootStrategy
         Vector2 playerPos = new(context.shooterTransform.position.x, context.shooterTransform.position.y);
         Vector2 randomOffset = Random.insideUnitCircle * context.weaponInstance.baseRange;
         Vector2 AOECenter = playerPos + randomOffset;
-
+        float damage = context.weaponInstance.RollDamage();
         GameObject aoeInstance = Object.Instantiate(aoePrefab, AOECenter, Quaternion.identity);
         aoeInstance.transform.localScale = new Vector3(context.weaponInstance.aoeRadius * 2, context.weaponInstance.aoeRadius * 2);
         Object.Destroy(aoeInstance, 2f); // REVIEW - hardcoded destroy time ser baseado no tempo de animacao do AOE
@@ -22,7 +22,7 @@ public class RandomAOEStrategy : IShootStrategy
         foreach (Collider2D enemyCollider in hitColliders)
         {
             IDamageable damageable = enemyCollider.GetComponent<IDamageable>();
-            damageable.TakeDamage(context.weaponInstance.baseDamage);
+            damageable.TakeDamage(damage);
         }
     }
 }

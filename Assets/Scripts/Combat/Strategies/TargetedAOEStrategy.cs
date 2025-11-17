@@ -12,7 +12,7 @@ public class TargetedAOEStrategy : IShootStrategy
             return;
         }
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(enemyPos, context.weaponInstance.baseRange, context.targetLayer);
-
+        float damage = context.weaponInstance.RollDamage();
 
         GameObject aoeInstance = Object.Instantiate(aoePrefab, enemyPos, Quaternion.identity);
         aoeInstance.transform.localScale = new Vector3(context.weaponInstance.aoeRadius * 2, context.weaponInstance.aoeRadius * 2);
@@ -22,7 +22,7 @@ public class TargetedAOEStrategy : IShootStrategy
         foreach (Collider2D enemyCollider in hitColliders)
         {
             IDamageable damageable = enemyCollider.GetComponent<IDamageable>();
-            damageable.TakeDamage(context.weaponInstance.baseDamage);
+            damageable.TakeDamage(damage);
         }
     }
 }

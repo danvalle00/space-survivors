@@ -3,9 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Weapons/WeaponData")]
 public class WeaponData : ScriptableObject
 {
-    [Header("Base Stats")]
-    [Tooltip("All Strategies use these base stats")]
+    [Header("Weapon Info")]
     public string weaponName;
+    public string weaponDescription;
+    public Sprite weaponIcon;
+    [Header("Base Stats")] // REVIEW - DEFINIR SE TEM MAIS, SOBRE PREFAB OU SPRITES, SOUNDS VFX ETC
+    [Tooltip("All Strategies use these base stats")]
     public float baseDamage;
     public float baseFireRate;
     public float baseRange;
