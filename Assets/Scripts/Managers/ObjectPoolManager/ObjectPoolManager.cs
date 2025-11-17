@@ -114,7 +114,7 @@ public class ObjectPoolManager : MonoBehaviour
             return obj as T;
         }
 
-        
+
         if (!obj.TryGetComponent(out T component))
         {
             Debug.LogWarning("ObjectPoolManager: The spawned object does not have the requested component.");
@@ -153,6 +153,18 @@ public class ObjectPoolManager : MonoBehaviour
         {
             Debug.LogWarning("ObjectPoolManager: Trying to return an objec that isnt pooled: " + obj.name);
 
+        }
+    }
+
+    public static void RegisterPreLoadedObject(GameObject preloadedObject, GameObject prefab, PoolType poolType = PoolType.Enemies)
+    {
+        if (!cloneToPrefabMap.ContainsKey(preloadedObject))
+        {
+            cloneToPrefabMap.Add(preloadedObject, prefab);
+        }
+        if (!objectPools.ContainsKey(prefab))
+        {
+            CreatePool(prefab, Vector3.zero, Quaternion.identity, poolType);
         }
     }
 }

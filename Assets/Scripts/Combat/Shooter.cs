@@ -18,8 +18,7 @@ public class Shooter : MonoBehaviour
             Debug.LogError("Shooter: No WeaponData assigned.");
             return;
         }
-        Debug.Log("Shooter: This shooter is tagged as " + this.tag + ", setting isPlayer to true.");
-        if (this.CompareTag("Player"))
+        if (this.CompareTag("Player")) // its possible to make more generic with I have more types of shooters, for now only enemy and player
         {
             isPlayer = true;
         }

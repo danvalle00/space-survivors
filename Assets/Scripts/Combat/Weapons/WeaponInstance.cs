@@ -32,10 +32,10 @@ public class WeaponInstance
         bool isCrit = Random.value <= critChance;
         if (isCrit)
         {
-            Debug.Log("Critical Hit! " + critDamage + "x damage.");
             return baseDamage * critDamage;
         }
         return baseDamage;
+
     }
     private void InitializeAsPlayerWeapon(WeaponData weaponData)
     {

@@ -81,7 +81,6 @@ public class EnemySpawner : MonoBehaviour
             }
             yield return _enemySpawnStagger; // small delay between spawns (tried to prevent lag spike)
             GameObject enemyObj = ObjectPoolManager.SpawnObject(enemyVariants[enemyIndex], spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Enemies);
-
             if (!enemyObj.TryGetComponent(out Enemy enemy))
             {
                 Debug.LogWarning("EnemySpawner: Spawned object does not have an Enemy component.");
