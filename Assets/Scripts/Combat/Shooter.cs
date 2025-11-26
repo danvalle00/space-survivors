@@ -11,6 +11,7 @@ public class Shooter : MonoBehaviour
     [SerializeField] private readonly List<WeaponSlot> weaponsSlots = new(6);
     [SerializeField] private List<WeaponData> weaponsData = new();
     private bool isPlayer = false;
+
     void Start()
     {
         if (weaponsData == null || weaponsData.Count == 0)
@@ -21,7 +22,9 @@ public class Shooter : MonoBehaviour
         if (this.CompareTag("Player")) // its possible to make more generic with I have more types of shooters, for now only enemy and player
         {
             isPlayer = true;
+            
         }
+
         EquipWeapons(weaponsData);
     }
 
@@ -30,14 +33,16 @@ public class Shooter : MonoBehaviour
 
         for (int i = 0; i < weaponsSlots.Count; i++)
         {
-            WeaponSlot index = weaponsSlots[i];
-            if (Time.time >= index.nextFireTime)
+            WeaponSlot slot = weaponsSlots[i];
+            float weaponRange = slot.instance.GetStat(WeaponStatType.Range);
+            float weaponFireRate = slot.instance.GetStat(WeaponStatType.FireRate);
+            if (Time.time >= slot.nextFireTime)
             {
-                Transform targetEnemy = FindClosestEnemy(index.data.baseRange);
+                Transform targetEnemy = FindClosestEnemy(weaponRange);
                 if (targetEnemy != null)
                 {
-                    Shoot(targetEnemy.position, index);
-                    index.nextFireTime = Time.time + 1f / index.data.baseFireRate;
+                    Shoot(targetEnemy.position, slot);
+                    slot.nextFireTime = Time.time + 1f / weaponFireRate;
                 }
             }
 
@@ -51,25 +56,27 @@ public class Shooter : MonoBehaviour
             Debug.LogWarning("Shooter: No shooting strategy or weapon data assigned.");
             return;
         }
-        if (weaponIndex.instance.baseQuantity >= 1 && weaponIndex.instance.delayBetweenShots > 0f)
+        int quantity = (int)weaponIndex.instance.GetStat(WeaponStatType.Quantity);
+        float delayBetweenShots = weaponIndex.instance.GetStat(WeaponStatType.DelayBetweenShots);
+        if (quantity >= 1 && delayBetweenShots > 0f)
         {
-            StartCoroutine(ShootSequence(targetPosition, weaponIndex));
+            StartCoroutine(ShootSequence(targetPosition, weaponIndex, quantity, delayBetweenShots));
         }
-        else // se for quantity > 1 mas delayBetweenShots == 0
+        else // se for quantity == 1 mas delayBetweenShots == 0
         {
             ExecuteShoot(targetPosition, weaponIndex);
         }
 
     }
 
-    private IEnumerator ShootSequence(Vector3 targetPosition, WeaponSlot weaponIndex)
+    private IEnumerator ShootSequence(Vector3 targetPosition, WeaponSlot weaponIndex, int quantity, float delayBetweenShots)
     {
-        for (int i = 0; i < weaponIndex.instance.baseQuantity; i++)
+        for (int i = 0; i < quantity; i++)
         {
             ExecuteShoot(targetPosition, weaponIndex);
-            if (i < weaponIndex.instance.baseQuantity - 1) // evita esperar apos o ultimo tiro
+            if (i < quantity - 1) // evita esperar apos o ultimo tiro
             {
-                yield return new WaitForSeconds(weaponIndex.instance.delayBetweenShots);
+                yield return new WaitForSeconds(delayBetweenShots);
             }
         }
     }
@@ -85,7 +92,7 @@ public class Shooter : MonoBehaviour
             direction = (Vector2)direction,
             targetLayer = targetLayer,
             weaponInstance = weaponIndex.instance,
-            shooterTransform = transform
+            shooterTransform = transform,
         };
 
         weaponIndex.strategy.Execute(context);

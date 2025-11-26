@@ -38,11 +38,11 @@ public class ObjectPoolManager : MonoBehaviour
     }
 
     // criar a pool em si
-    private static void CreatePool(GameObject prefab, Vector3 pos, Quaternion rotation, PoolType poolType = PoolType.Enemies)
+    private static void CreatePool(GameObject prefab, PoolType poolType = PoolType.Enemies)
     {
         // constructor da ObjectPool
         ObjectPool<GameObject> newPool = new(
-            createFunc: () => CreateObject(prefab, pos, rotation, poolType), // REVIEW - mexer nessa inicializacao com pos e rotation
+            createFunc: () => CreateObject(prefab, poolType), // REVIEW - mexer nessa inicializacao com pos e rotation
             actionOnGet: OnGetObject,
             actionOnRelease: OnReleaseObject,
             actionOnDestroy: OnDestroyObject
@@ -51,10 +51,10 @@ public class ObjectPoolManager : MonoBehaviour
     }
 
     // a pattern de objectPool consistem em 4 callbacks principais
-    private static GameObject CreateObject(GameObject prefab, Vector3 pos, Quaternion rotation, PoolType poolType = PoolType.Enemies)
+    private static GameObject CreateObject(GameObject prefab, PoolType poolType = PoolType.Enemies)
     {
         prefab.SetActive(false);
-        GameObject obj = Instantiate(prefab, pos, rotation);
+        GameObject obj = Instantiate(prefab, Vector3.one, Quaternion.identity);
         prefab.SetActive(true);
         GameObject parentObject = SetParentObject(poolType);
         obj.transform.parent = parentObject.transform;
@@ -93,7 +93,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         if (!objectPools.ContainsKey(objectToSpawn))
         {
-            CreatePool(objectToSpawn, pos, rotation, poolType);
+            CreatePool(objectToSpawn, poolType);
         }
         GameObject obj = objectPools[objectToSpawn].Get();
 
@@ -164,7 +164,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
         if (!objectPools.ContainsKey(prefab))
         {
-            CreatePool(prefab, Vector3.zero, Quaternion.identity, poolType);
+            CreatePool(prefab, poolType);
         }
     }
 }

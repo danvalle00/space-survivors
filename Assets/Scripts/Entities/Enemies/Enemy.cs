@@ -28,13 +28,14 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         enemyRb = GetComponent<Rigidbody2D>();
         enemyRb.gravityScale = 0f;
+        Initialize(1f);
 
     }
     void Start()
     {
         ObjectPoolManager.RegisterPreLoadedObject(this.gameObject, enemyData.enemyPrefab, ObjectPoolManager.PoolType.Enemies);
     }
-        
+
 
     void Update()
     {

@@ -17,15 +17,15 @@ MonoBehaviour:
   hpRegenMultiplier: 0
   numberOfLives: 0
   armorMultiplier: 0
-  speedMultiplier: 0
-  damageMultiplier: 0
-  fireRateMultiplier: 0
+  speedMultiplier: 1
+  damageMultiplier: 1
+  fireRateMultiplier: 1
   critChanceMultiplier: 5
   critDamageMultiplier: 100
-  projectileSpeedMultiplier: 0
-  aoeRadiusMultiplier: 0
-  quantityMultiplier: 0
-  lifestealMultiplier: 0
+  projectileSpeedMultiplier: 1
+  aoeRadiusMultiplier: 1
+  quantityMultiplier: 1
+  lifestealMultiplier: 1
   skipUpgradeChances: 0
   banishUpgrades: 0
   sealUpgrades: 0

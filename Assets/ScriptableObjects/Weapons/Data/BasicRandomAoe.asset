@@ -15,9 +15,9 @@ MonoBehaviour:
   weaponName: Basic Random AOE
   weaponDescription: 
   weaponIcon: {fileID: 0}
-  baseDamage: 50
+  baseDamage: 0
   baseFireRate: 1
-  baseRange: 15
+  baseRange: 7.5
   baseQuantity: 1
   delayBetweenShots: 0
   projectileSpeed: 0

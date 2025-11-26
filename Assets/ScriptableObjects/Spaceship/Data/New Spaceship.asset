@@ -21,12 +21,12 @@ MonoBehaviour:
   shipSpeed: 0
   shipCritChance: 5
   shipCritDamage: 150
-  shipIncreasedArea: 0
-  shipIncreasedFireRate: 0
-  shipIncreasedProjectileSpeed: 0
-  shipIncreasedQuantity: 0
-  shipIncreasedDamage: 0
-  shipLifesteal: 0
+  shipIncreasedArea: 1
+  shipIncreasedFireRate: 1
+  shipIncreasedProjectileSpeed: 1
+  shipIncreasedQuantity: 1
+  shipIncreasedDamage: 1
+  shipLifesteal: 1
   shipXpMultiplier: 0
   shipDifficultyMultiplier: 0
   shipCurrencyMultiplier: 0

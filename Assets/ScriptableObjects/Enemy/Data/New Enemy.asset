@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60652cf5a393fb64d8c0c5d70e45a433, type: 3}
   m_Name: New Enemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  enemyPrefab: {fileID: 0}
-  enemyBaseHealth: 100
+  enemyName: 
+  enemyDescription: 
+  enemyPrefab: {fileID: 7028704274233785474, guid: acf33c81c80980941b6f491445cc8cc9, type: 3}
+  enemyBaseHealth: 10000
   enemyBaseSpeed: 2
   enemyBaseArmor: 0
   enemyBaseContactDamage: 10

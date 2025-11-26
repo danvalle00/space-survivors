@@ -8,7 +8,7 @@ public class Player : MonoBehaviour, IDamageable
 
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Vector2 moveInput;
-    [SerializeField, Range(10f, 50f)] private float debugRange;
+    [SerializeField, Range(1f, 50f)] private float debugRange;
     void Awake()
     {
         inputSystem = new InputSystem_Actions();

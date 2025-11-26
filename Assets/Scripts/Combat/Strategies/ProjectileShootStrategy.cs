@@ -4,8 +4,9 @@ public class ProjectileShootStrategy : IShootStrategy
 {
     public void Execute(ShootContext context)
     {
-        int quantity = context.weaponInstance.baseQuantity;
-        float spreadAngle = context.weaponInstance.spreadAngle;
+        int quantity = (int)context.weaponInstance.GetStat(WeaponStatType.Quantity);
+        float spreadAngle = context.weaponInstance.GetStat(WeaponStatType.SpreadAngle);
+        float damage = context.weaponInstance.RollDamage();
         GameObject projectilePrefab = context.weaponInstance.weaponData.projectilePrefab;
         if (projectilePrefab == null)
         {
@@ -22,7 +23,7 @@ public class ProjectileShootStrategy : IShootStrategy
                 Debug.LogWarning("ProjectileShootStrategy: No Projectile component found on projectile prefab.");
                 return;
             }
-            projComponent.Initialize(modifiedDirection, context.weaponInstance.projectileSpeed, context.weaponInstance.baseDamage, context.targetLayer);
+            projComponent.Initialize(modifiedDirection, context.weaponInstance.GetStat(WeaponStatType.ProjectileSpeed), damage, context.targetLayer);
 
         }
     }

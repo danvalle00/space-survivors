@@ -16,10 +16,10 @@ MonoBehaviour:
   weaponDescription: 
   weaponIcon: {fileID: 0}
   baseDamage: 0
-  baseFireRate: 0
-  baseRange: 0
-  baseQuantity: 0
-  delayBetweenShots: 0
+  baseFireRate: 0.25
+  baseRange: 10
+  baseQuantity: 1
+  delayBetweenShots: 0.2
   projectileSpeed: 0
   spreadAngle: 0
   projectilePrefab: {fileID: 0}

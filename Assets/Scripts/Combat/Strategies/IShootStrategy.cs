@@ -13,5 +13,6 @@ public struct ShootContext // i can add more context if a need arises
     public LayerMask targetLayer;
     public WeaponInstance weaponInstance;
     public Transform shooterTransform;
+    public PlayerStatsInstance playerStats;
     
 }

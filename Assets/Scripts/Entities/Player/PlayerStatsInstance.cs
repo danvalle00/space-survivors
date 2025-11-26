@@ -1,60 +1,88 @@
+using System.Collections.Generic;
+using System;
 public class PlayerStatsInstance
 {
-    // Defensive Stats
-    public float maxHp;
-    public float hpRegen;
-    public int armor;
-    public float speed;
+    // Base Stats Instance combining PlayerData and SpaceshipData
+    private Dictionary<StatType, float> baseStats = new();
 
-    // Offensive Stats
-    public float damage;
-    public float critChance;
-    public float critDamage;
-    public float fireRate;
-    public float projectileSpeed;
-    public float area;
-    public int quantity;
-    public float lifesteal;
-
-    // Utility Stats
+    // Upgrade Modifiers
+    private StatModifierCollection<StatType> modifiers = new();
+    // Utility stats
     public int numberOfLives;
     public int skipUpgradeChances;
     public int banishUpgrades;
     public int sealUpgrades;
-    
-    // Score Stats
-    public float xpMultiplier;
-    public float difficultyMultiplier;
-    public float currencyMultiplier;
 
+    
     public PlayerStatsInstance(PlayerData playerData, SpaceshipData spaceshipData)
     {
-        // Defensive Stats
-        maxHp = spaceshipData.shipMaxHp * playerData.hpMultiplier;
-        hpRegen = spaceshipData.shipHpRegen * playerData.hpRegenMultiplier;
-        armor = spaceshipData.shipArmor + playerData.armorMultiplier;
-        speed = spaceshipData.shipSpeed * playerData.speedMultiplier;
-
-        // Offensive Stats
-        damage = spaceshipData.shipIncreasedDamage * playerData.damageMultiplier;
-        critChance = spaceshipData.shipCritChance * playerData.critChanceMultiplier;
-        critDamage = spaceshipData.shipCritDamage * playerData.critDamageMultiplier;
-        fireRate = spaceshipData.shipIncreasedFireRate * playerData.fireRateMultiplier;
-        projectileSpeed = spaceshipData.shipIncreasedProjectileSpeed * playerData.projectileSpeedMultiplier;
-        area = spaceshipData.shipIncreasedArea * playerData.aoeRadiusMultiplier;
-        quantity = spaceshipData.shipIncreasedQuantity + playerData.quantityMultiplier;
-        lifesteal = spaceshipData.shipLifesteal * playerData.lifestealMultiplier;
-
-        // Utility Stats
+       
+        // defensive
+        baseStats.Add(StatType.MaxHp, spaceshipData.shipMaxHp * playerData.hpMultiplier);
+        baseStats.Add(StatType.HpRegen, spaceshipData.shipHpRegen * playerData.hpRegenMultiplier);
+        baseStats.Add(StatType.Armor, spaceshipData.shipArmor + playerData.armorMultiplier);
+        baseStats.Add(StatType.Speed, spaceshipData.shipSpeed * playerData.speedMultiplier);
+        
+        // offensive
+        baseStats.Add(StatType.Damage, spaceshipData.shipIncreasedDamage * playerData.damageMultiplier);
+        baseStats.Add(StatType.CritChance, spaceshipData.shipCritChance * playerData.critChanceMultiplier);
+        baseStats.Add(StatType.CritDamage, spaceshipData.shipCritDamage * playerData.critDamageMultiplier);
+        baseStats.Add(StatType.FireRate, spaceshipData.shipIncreasedFireRate * playerData.fireRateMultiplier);
+        baseStats.Add(StatType.ProjectileSpeed, spaceshipData.shipIncreasedProjectileSpeed * playerData.projectileSpeedMultiplier);
+        baseStats.Add(StatType.Area, spaceshipData.shipIncreasedArea * playerData.aoeRadiusMultiplier);
+        baseStats.Add(StatType.Quantity, spaceshipData.shipIncreasedQuantity + playerData.quantityMultiplier);
+        baseStats.Add(StatType.Lifesteal, spaceshipData.shipLifesteal * playerData.lifestealMultiplier);
+        
+        // currency, xp, difficulty
+        baseStats.Add(StatType.XpMultiplier, spaceshipData.shipXpMultiplier * playerData.xpMultiplier);
+        baseStats.Add(StatType.DifficultyMultiplier, spaceshipData.shipDifficultyMultiplier * playerData.difficultyMultiplier);
+        baseStats.Add(StatType.CurrencyMultiplier, spaceshipData.shipCurrencyMultiplier * playerData.currencyMultiplier);
+        
+        // utility
         numberOfLives = playerData.numberOfLives;
         skipUpgradeChances = playerData.skipUpgradeChances;
         banishUpgrades = playerData.banishUpgrades;
         sealUpgrades = playerData.sealUpgrades;
-
-        // Score Stats
-        xpMultiplier = spaceshipData.shipXpMultiplier * playerData.xpMultiplier;
-        difficultyMultiplier = spaceshipData.shipDifficultyMultiplier * playerData.difficultyMultiplier;
-        currencyMultiplier = spaceshipData.shipCurrencyMultiplier * playerData.currencyMultiplier;    
-
     }
+
+    public void AddMultiplier(StatType statType, float multiplier)
+    {
+        modifiers.AddMultiplier(statType, multiplier);
+    }
+        
+    public void AddAddition(StatType statType, float addition)
+    {
+        modifiers.AddAddition(statType, addition);
+    }
+    
+    public float GetFinalStat(StatType statType)
+    {
+        float baseValue = baseStats[statType];
+        return modifiers.ApplyModifiers(statType, baseValue);
+    }
+
+}
+        
+
+
+public enum StatType
+{
+    // Defensive
+    MaxHp,
+    HpRegen,
+    Armor,
+    Speed,
+    // Offensive
+    Damage,
+    CritChance,
+    CritDamage,
+    FireRate,
+    ProjectileSpeed,
+    Area,
+    Quantity,
+    Lifesteal,
+    // Currency, xP, Difficulty
+    XpMultiplier,
+    DifficultyMultiplier,
+    CurrencyMultiplier
 }

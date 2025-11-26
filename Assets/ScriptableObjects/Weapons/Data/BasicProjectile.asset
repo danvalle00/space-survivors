@@ -15,12 +15,12 @@ MonoBehaviour:
   weaponName: Basic Projectile
   weaponDescription: 
   weaponIcon: {fileID: 0}
-  baseDamage: 50
-  baseFireRate: 1
+  baseDamage: 0
+  baseFireRate: 0.5
   baseRange: 15
-  baseQuantity: 2
-  delayBetweenShots: 0
-  projectileSpeed: 5
+  baseQuantity: 1
+  delayBetweenShots: 0.1
+  projectileSpeed: 10
   spreadAngle: 15
   projectilePrefab: {fileID: 1919109177573773446, guid: 4589fb9701158b5478977b11cf77be6e, type: 3}
   aoeRadius: 0
