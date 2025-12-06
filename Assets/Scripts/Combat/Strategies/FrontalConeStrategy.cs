@@ -14,11 +14,13 @@ public class FrontalConeStrategy : IShootStrategy
         {
             Vector2 dirToEnemy = (enemyCollider.transform.position - context.shooterTransform.position).normalized;
             float dotProduct = Vector2.Dot(context.direction, dirToEnemy);
-            if (dotProduct >= dotThreshold)
+            if (!(dotProduct >= dotThreshold))
             {
-                IDamageable damageable = enemyCollider.GetComponent<IDamageable>();
-                damageable.TakeDamage(damage);
+                continue;
             }
+
+            IDamageable damageable = enemyCollider.GetComponent<IDamageable>();
+            damageable.TakeDamage(damage);
         }
 
     }

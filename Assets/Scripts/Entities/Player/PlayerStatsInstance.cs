@@ -1,28 +1,27 @@
 using System.Collections.Generic;
-using System;
 public class PlayerStatsInstance
 {
     // Base Stats Instance combining PlayerData and SpaceshipData
-    private Dictionary<StatType, float> baseStats = new();
+    private readonly Dictionary<StatType, float> baseStats = new();
 
     // Upgrade Modifiers
-    private StatModifierCollection<StatType> modifiers = new();
+    private readonly StatModifierCollection<StatType> modifiers = new();
     // Utility stats
     public int numberOfLives;
     public int skipUpgradeChances;
     public int banishUpgrades;
     public int sealUpgrades;
 
-    
+
     public PlayerStatsInstance(PlayerData playerData, SpaceshipData spaceshipData)
     {
-       
+
         // defensive
         baseStats.Add(StatType.MaxHp, spaceshipData.shipMaxHp * playerData.hpMultiplier);
         baseStats.Add(StatType.HpRegen, spaceshipData.shipHpRegen * playerData.hpRegenMultiplier);
         baseStats.Add(StatType.Armor, spaceshipData.shipArmor + playerData.armorMultiplier);
         baseStats.Add(StatType.Speed, spaceshipData.shipSpeed * playerData.speedMultiplier);
-        
+
         // offensive
         baseStats.Add(StatType.Damage, spaceshipData.shipIncreasedDamage * playerData.damageMultiplier);
         baseStats.Add(StatType.CritChance, spaceshipData.shipCritChance * playerData.critChanceMultiplier);
@@ -31,13 +30,13 @@ public class PlayerStatsInstance
         baseStats.Add(StatType.ProjectileSpeed, spaceshipData.shipIncreasedProjectileSpeed * playerData.projectileSpeedMultiplier);
         baseStats.Add(StatType.Area, spaceshipData.shipIncreasedArea * playerData.aoeRadiusMultiplier);
         baseStats.Add(StatType.Quantity, spaceshipData.shipIncreasedQuantity + playerData.quantityMultiplier);
-        baseStats.Add(StatType.Lifesteal, spaceshipData.shipLifesteal * playerData.lifestealMultiplier);
-        
+        baseStats.Add(StatType.LifeSteal, spaceshipData.shipLifeSteal * playerData.lifeStealMultiplier);
+
         // currency, xp, difficulty
         baseStats.Add(StatType.XpMultiplier, spaceshipData.shipXpMultiplier * playerData.xpMultiplier);
         baseStats.Add(StatType.DifficultyMultiplier, spaceshipData.shipDifficultyMultiplier * playerData.difficultyMultiplier);
         baseStats.Add(StatType.CurrencyMultiplier, spaceshipData.shipCurrencyMultiplier * playerData.currencyMultiplier);
-        
+
         // utility
         numberOfLives = playerData.numberOfLives;
         skipUpgradeChances = playerData.skipUpgradeChances;
@@ -49,12 +48,12 @@ public class PlayerStatsInstance
     {
         modifiers.AddMultiplier(statType, multiplier);
     }
-        
+
     public void AddAddition(StatType statType, float addition)
     {
         modifiers.AddAddition(statType, addition);
     }
-    
+
     public float GetFinalStat(StatType statType)
     {
         float baseValue = baseStats[statType];
@@ -62,7 +61,7 @@ public class PlayerStatsInstance
     }
 
 }
-        
+
 
 
 public enum StatType
@@ -80,7 +79,7 @@ public enum StatType
     ProjectileSpeed,
     Area,
     Quantity,
-    Lifesteal,
+    LifeSteal,
     // Currency, xP, Difficulty
     XpMultiplier,
     DifficultyMultiplier,

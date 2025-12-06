@@ -1,15 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
-using System.Collections.Generic;
 
 public class ObjectPoolManager : MonoBehaviour
 {
     private GameObject emptyParent;
-    private static GameObject enemiesParent;
-    private static GameObject projectilesParent;
+    private static GameObject _enemiesParent;
+    private static GameObject _projectilesParent;   
 
-    private static Dictionary<GameObject, ObjectPool<GameObject>> objectPools;
-    private static Dictionary<GameObject, GameObject> cloneToPrefabMap;
+    private static Dictionary<GameObject, ObjectPool<GameObject>> _objectPools;
+    private static Dictionary<GameObject, GameObject> _cloneToPrefabMap;
 
     public enum PoolType
     {
@@ -19,22 +19,31 @@ public class ObjectPoolManager : MonoBehaviour
 
     public static PoolType PoolingType;
 
-    void Awake()
+    private void Awake()
     {
-        objectPools = new();
-        cloneToPrefabMap = new();
+        _objectPools = new Dictionary<GameObject, ObjectPool<GameObject>>();
+        _cloneToPrefabMap = new Dictionary<GameObject, GameObject>();
         SetupEmptyGameObjectParents();
     }
     private void SetupEmptyGameObjectParents() // cria na hierarquia os gameObject parent para organizar
     {
         emptyParent = new GameObject("Object Pools");
 
-        enemiesParent = new GameObject("Enemies");
-        enemiesParent.transform.parent = emptyParent.transform;
+        _enemiesParent = new GameObject("Enemies")
+        {
+            transform =
+            {
+                parent = emptyParent.transform
+            }
+        };
 
-        projectilesParent = new GameObject("Projectiles");
-        projectilesParent.transform.parent = emptyParent.transform;
-
+        _projectilesParent = new GameObject("Projectiles")
+        {
+            transform =
+            {
+                parent = emptyParent.transform
+            }
+        };
     }
 
     // criar a pool em si
@@ -47,7 +56,7 @@ public class ObjectPoolManager : MonoBehaviour
             actionOnRelease: OnReleaseObject,
             actionOnDestroy: OnDestroyObject
         );
-        objectPools.Add(prefab, newPool);
+        _objectPools.Add(prefab, newPool);
     }
 
     // a pattern de objectPool consistem em 4 callbacks principais
@@ -74,37 +83,34 @@ public class ObjectPoolManager : MonoBehaviour
 
     private static void OnDestroyObject(GameObject obj)
     {
-        if (cloneToPrefabMap.ContainsKey(obj))
+        if (_cloneToPrefabMap.ContainsKey(obj))
         {
-            cloneToPrefabMap.Remove(obj);
+            _cloneToPrefabMap.Remove(obj);
         }
     }
     private static GameObject SetParentObject(PoolType poolType)
     {
         return poolType switch
         {
-            PoolType.Enemies => enemiesParent,
-            PoolType.Projectiles => projectilesParent,
+            PoolType.Enemies => _enemiesParent,
+            PoolType.Projectiles => _projectilesParent,
             _ => null,
         };
     }
 
     private static T SpawnObject<T>(GameObject objectToSpawn, Vector3 pos, Quaternion rotation, PoolType poolType = PoolType.Enemies) where T : Object
     {
-        if (!objectPools.ContainsKey(objectToSpawn))
+        if (!_objectPools.ContainsKey(objectToSpawn))
         {
             CreatePool(objectToSpawn, poolType);
         }
-        GameObject obj = objectPools[objectToSpawn].Get();
+        GameObject obj = _objectPools[objectToSpawn].Get();
 
-        if (obj == null)
+        if (!obj)
         {
             return null;
         }
-        if (!cloneToPrefabMap.ContainsKey(obj))
-        {
-            cloneToPrefabMap.Add(obj, objectToSpawn);
-        }
+        _cloneToPrefabMap.TryAdd(obj, objectToSpawn);
 
         obj.transform.SetPositionAndRotation(pos, rotation);
         obj.SetActive(true);
@@ -136,7 +142,7 @@ public class ObjectPoolManager : MonoBehaviour
 
     public static void ReturnToPool(GameObject obj, PoolType poolType = PoolType.Enemies)
     {
-        if (cloneToPrefabMap.TryGetValue(obj, out GameObject prefab))
+        if (_cloneToPrefabMap.TryGetValue(obj, out GameObject prefab))
         {
             GameObject parentObject = SetParentObject(poolType);
             if (obj.transform.parent != parentObject.transform)
@@ -144,25 +150,22 @@ public class ObjectPoolManager : MonoBehaviour
                 obj.transform.SetParent(parentObject.transform);
             }
 
-            if (objectPools.TryGetValue(prefab, out ObjectPool<GameObject> pool))
+            if (_objectPools.TryGetValue(prefab, out ObjectPool<GameObject> pool))
             {
                 pool.Release(obj);
             }
         }
         else
         {
-            Debug.LogWarning("ObjectPoolManager: Trying to return an objec that isnt pooled: " + obj.name);
+            Debug.LogWarning("ObjectPoolManager: Trying to return an object that isn't pooled: " + obj.name);
 
         }
     }
 
     public static void RegisterPreLoadedObject(GameObject preloadedObject, GameObject prefab, PoolType poolType = PoolType.Enemies)
     {
-        if (!cloneToPrefabMap.ContainsKey(preloadedObject))
-        {
-            cloneToPrefabMap.Add(preloadedObject, prefab);
-        }
-        if (!objectPools.ContainsKey(prefab))
+        _cloneToPrefabMap.TryAdd(preloadedObject, prefab);
+        if (!_objectPools.ContainsKey(prefab))
         {
             CreatePool(prefab, poolType);
         }

@@ -8,11 +8,11 @@ public class Shooter : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform shootPoint;
 
-    [SerializeField] private readonly List<WeaponSlot> weaponsSlots = new(6);
+    private readonly List<WeaponSlot> weaponsSlots = new(6);
     [SerializeField] private List<WeaponData> weaponsData = new();
-    private bool isPlayer = false;
+    private bool isPlayer;
 
-    void Start()
+    private void Start()
     {
         if (weaponsData == null || weaponsData.Count == 0)
         {
@@ -22,32 +22,32 @@ public class Shooter : MonoBehaviour
         if (this.CompareTag("Player")) // its possible to make more generic with I have more types of shooters, for now only enemy and player
         {
             isPlayer = true;
-            
+
         }
 
         EquipWeapons(weaponsData);
     }
 
-    void Update() // manter shoot como atirar 1 arma e aqui eu faço o loop para todas as armas
+    private void Update() // manter shoot como atirar 1 arma e aqui eu faço o loop para todas as armas
     {
-
-        for (int i = 0; i < weaponsSlots.Count; i++)
+        foreach (WeaponSlot slot in weaponsSlots)
         {
-            WeaponSlot slot = weaponsSlots[i];
             float weaponRange = slot.instance.GetStat(WeaponStatType.Range);
             float weaponFireRate = slot.instance.GetStat(WeaponStatType.FireRate);
-            if (Time.time >= slot.nextFireTime)
+            if (!(Time.time >= slot.nextFireTime))
             {
-                Transform targetEnemy = FindClosestEnemy(weaponRange);
-                if (targetEnemy != null)
-                {
-                    Shoot(targetEnemy.position, slot);
-                    slot.nextFireTime = Time.time + 1f / weaponFireRate;
-                }
+                continue;
             }
 
-        }
+            Transform targetEnemy = FindClosestEnemy(weaponRange);
+            if (!targetEnemy)
+            {
+                continue;
+            }
 
+            Shoot(targetEnemy.position, slot);
+            slot.nextFireTime = Time.time + 1f / weaponFireRate;
+        }
     }
     private void Shoot(Vector3 targetPosition, WeaponSlot weaponIndex)
     {
@@ -83,13 +83,13 @@ public class Shooter : MonoBehaviour
 
     private void ExecuteShoot(Vector3 targetPosition, WeaponSlot weaponIndex)
     {
-        Vector3 spawnPos = shootPoint != null ? shootPoint.position : transform.position; // esse shoot point pode ser a arma que tiver no ring magnetico ao redor da nave
+        Vector3 spawnPos = shootPoint ? shootPoint.position : transform.position; // esse shoot point pode ser a arma que tiver no ring magnetico ao redor da nave
         Vector3 direction = (targetPosition - spawnPos).normalized;
         ShootContext context = new()
         {
-            targetPosition = (Vector2)targetPosition,
-            spawnPosition = (Vector2)spawnPos,
-            direction = (Vector2)direction,
+            targetPosition = targetPosition,
+            spawnPosition = spawnPos,
+            direction = direction,
             targetLayer = targetLayer,
             weaponInstance = weaponIndex.instance,
             shooterTransform = transform,

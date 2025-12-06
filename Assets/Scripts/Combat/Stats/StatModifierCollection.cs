@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 public class StatModifierCollection<TStatEnum> where TStatEnum : Enum
 {
-    private Dictionary<TStatEnum, float> statMultipliers = new();
-    private Dictionary<TStatEnum, float> statAdditions = new();
+    private readonly Dictionary<TStatEnum, float> statMultipliers = new();
+    private readonly Dictionary<TStatEnum, float> statAdditions = new();
     public StatModifierCollection()
     {
-        InitializateModifiers();
+        ModifiersInitialization();
     }
 
     public void AddMultiplier(TStatEnum statType, float multiplier)
@@ -18,7 +18,7 @@ public class StatModifierCollection<TStatEnum> where TStatEnum : Enum
         statAdditions[statType] += addition;
     }
 
-    public void InitializateModifiers()
+    private void ModifiersInitialization()
     {
         foreach (TStatEnum stat in Enum.GetValues(typeof(TStatEnum)))
         {

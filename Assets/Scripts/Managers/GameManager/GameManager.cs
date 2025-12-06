@@ -30,5 +30,5 @@ public class GameManager : MonoBehaviour
     {
         PlayerStatsInstance = new PlayerStatsInstance(playerPersistentData, currentSpaceshipData);
     }
-        
+
 }

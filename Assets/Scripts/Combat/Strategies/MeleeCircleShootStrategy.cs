@@ -14,10 +14,10 @@ public class MeleeCircleShootStrategy : IShootStrategy
         }
     }
 
-    private void DrawCircle(Vector3 center, float radius, Color color, float duration)
+    private static void DrawCircle(Vector3 center, float radius, Color color, float duration)
     {
-        int segments = 32;
-        float angleStep = 360f / segments;
+        const int segments = 32;
+        const float angleStep = 360f / segments;
 
         for (int i = 0; i < segments; i++)
         {
@@ -30,7 +30,8 @@ public class MeleeCircleShootStrategy : IShootStrategy
             Debug.DrawLine(point1, point2, color, duration);
         }
     }
-    public void DrawDebug(ShootContext context)
+
+    private static void DrawDebug(ShootContext context)
     {
         DrawCircle(context.shooterTransform.position, context.weaponInstance.GetStat(WeaponStatType.Range), Color.red, 5f);
     }

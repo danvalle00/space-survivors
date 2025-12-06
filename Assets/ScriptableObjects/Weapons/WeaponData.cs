@@ -42,7 +42,7 @@ public enum ShootStrategyType
 {
     Projectile,
     MeleeCircle,
-    TargetedAOE,
-    RandomAOE,
+    TargetedAoe,
+    RandomAoe,
     FrontalCone,
 }

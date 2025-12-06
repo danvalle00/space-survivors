@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class Projectile : MonoBehaviour
@@ -9,7 +9,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float damage;
     [SerializeField] private LayerMask targetLayer;
-    private bool isReturningToPool = false;
+    private bool isReturningToPool;
     private readonly WaitForSeconds returnDelay = new(10f); // Need find a number that the projectile will surely be out of screen
 
 

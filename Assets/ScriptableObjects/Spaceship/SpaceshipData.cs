@@ -28,7 +28,7 @@ public class SpaceshipData : ScriptableObject
     public int shipIncreasedQuantity;
     // public float shipIncreasedDuration; // REVIEW - se vai ter arma com duration
     public float shipIncreasedDamage;
-    public float shipLifesteal;
+    public float shipLifeSteal;
 
     [Header("Spaceship Point Stats")]
     [Tooltip("Currency, Xp or Difficulty stats for the spaceship")]

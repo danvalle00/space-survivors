@@ -21,18 +21,9 @@ public class HackDev : MonoBehaviour
     [SerializeField] private float aoeRadiusToAdd = 0.5f;
 
 
-    [Header("Overrides")]
-    [SerializeField] private bool overrideStats = false;
+    [Header("Overrides")] [SerializeField] private bool overrideStats;
     [SerializeField] private float overrideDamage = 10f;
     [SerializeField] private float overrideCritChance = 100f;
     [SerializeField] private float overrideCritDamage = 9999f;
-
-
-    void Update()
-    {
-
-    }
-
-
 
 }

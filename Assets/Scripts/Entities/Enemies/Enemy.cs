@@ -24,20 +24,20 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
 
-    void Awake()
+    private void Awake()
     {
         enemyRb = GetComponent<Rigidbody2D>();
         enemyRb.gravityScale = 0f;
         Initialize(1f);
 
     }
-    void Start()
+    private void Start()
     {
         ObjectPoolManager.RegisterPreLoadedObject(this.gameObject, enemyData.enemyPrefab, ObjectPoolManager.PoolType.Enemies);
     }
 
 
-    void Update()
+    private void Update()
     {
         if (playerTransform == null)
         {
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour, IDamageable
         playerDir = (playerTransform.position - transform.position).normalized;
 
     }
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         enemyRb.linearVelocity = playerDir * speed;
     }
@@ -60,11 +60,13 @@ public class Enemy : MonoBehaviour, IDamageable
         }
 
         currentHealth -= damageAmount;
-        if (currentHealth <= 0)
+        if (!(currentHealth <= 0))
         {
-            ObjectPoolManager.ReturnToPool(this.gameObject, ObjectPoolManager.PoolType.Enemies);
-            OnEnemyDied?.Invoke();
+            return;
         }
+
+        ObjectPoolManager.ReturnToPool(this.gameObject, ObjectPoolManager.PoolType.Enemies);
+        OnEnemyDied?.Invoke();
     }
 
 }

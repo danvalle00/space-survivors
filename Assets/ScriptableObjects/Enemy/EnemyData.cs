@@ -9,7 +9,7 @@ public class EnemyData : ScriptableObject
     public GameObject enemyPrefab; // maybe change for sprite later
     public float enemyBaseHealth = 100f;
     public float enemyBaseSpeed = 2f;
-    public float enemyBaseArmor = 0f;
+    public float enemyBaseArmor;
     public float enemyBaseContactDamage = 10f;
     [Header("Ranged Enemy Stats")]
     public float enemyProjectileSpeed = 5f;

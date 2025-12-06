@@ -3,13 +3,12 @@ using UnityEngine;
 
 public class WeaponInstance
 {
-    public WeaponData weaponData;
+    public readonly WeaponData weaponData;
     private readonly Dictionary<WeaponStatType, float> templateStats = new();
     private readonly PlayerStatsInstance playerStats = GameManager.Instance != null ? GameManager.Instance.PlayerStatsInstance : null;
-    private StatModifierCollection<WeaponStatType> modifiers = new();
-    private bool isPlayer;
-
-    private static readonly Dictionary<WeaponStatType, WeaponStatConfig> statConfigs = new()
+    private readonly StatModifierCollection<WeaponStatType> modifiers = new();
+    private readonly bool isPlayer;
+    private static readonly Dictionary<WeaponStatType, WeaponStatConfig> StatConfigs = new()
     {
         { WeaponStatType.Damage, new WeaponStatConfig(StatType.Damage, ScalingType.Multiplicative) },
         { WeaponStatType.FireRate, new WeaponStatConfig(StatType.FireRate, ScalingType.Multiplicative) },
@@ -17,9 +16,9 @@ public class WeaponInstance
         { WeaponStatType.ProjectileSpeed, new WeaponStatConfig(StatType.ProjectileSpeed, ScalingType.Multiplicative) },
         { WeaponStatType.AoeRadius, new WeaponStatConfig(StatType.Area, ScalingType.Multiplicative) },
         { WeaponStatType.ConeAngle, new WeaponStatConfig(StatType.Area, ScalingType.Multiplicative) },
-        { WeaponStatType.Range, new(null, ScalingType.None) },
-        { WeaponStatType.DelayBetweenShots, new(null, ScalingType.None) },
-        { WeaponStatType.SpreadAngle, new(null, ScalingType.None) }
+        { WeaponStatType.Range, new WeaponStatConfig(null, ScalingType.None) },
+        { WeaponStatType.DelayBetweenShots, new WeaponStatConfig(null, ScalingType.None) },
+        { WeaponStatType.SpreadAngle, new WeaponStatConfig(null, ScalingType.None) }
     };
 
     public WeaponInstance(WeaponData weaponData, bool isPlayer)
@@ -41,16 +40,12 @@ public class WeaponInstance
     public float GetStat(WeaponStatType weaponStat)
     {
         float templateValue = templateStats[weaponStat]; // valor a ser modificado
-        WeaponStatConfig config = statConfigs[weaponStat];
-        if (!isPlayer || !statConfigs.ContainsKey(weaponStat))
+        WeaponStatConfig config = StatConfigs[weaponStat];
+        if (!isPlayer || !StatConfigs.ContainsKey(weaponStat) || config.playerStat == null || config.scalingType == ScalingType.None)
         {
             return templateValue;
         }
 
-        if (config.playerStat == null || config.scalingType == ScalingType.None)
-        {
-            return templateValue;
-        }
         float playerStatValue = playerStats.GetFinalStat(config.playerStat.Value); // modificador do jogador (meta prog + spaceship)
         float scaledStatValue;
         switch (config.scalingType)
@@ -95,7 +90,7 @@ public class WeaponInstance
 public class WeaponStatConfig
 {
     public StatType? playerStat;
-    public ScalingType scalingType;
+    public readonly ScalingType scalingType;
 
     public WeaponStatConfig(StatType? playerStat, ScalingType scalingType)
     {

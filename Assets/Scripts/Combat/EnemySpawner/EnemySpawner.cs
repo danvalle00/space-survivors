@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    private static readonly WaitForSeconds _enemySpawnStagger = new(0.05f); //NOTE - these intervals can be adjusted as needed
-    private static readonly WaitForSeconds _bossSpawnInterval = new(300f); // 5 minutes
-    private static readonly WaitForSeconds _waveSpawnInterval = new(30f); // 30 seconds
+    private static readonly WaitForSeconds EnemySpawnStagger = new(0.05f); //NOTE - these intervals can be adjusted as needed
+    private static readonly WaitForSeconds BossSpawnInterval = new(300f); // 5 minutes
+    private static readonly WaitForSeconds WaveSpawnInterval = new(30f); // 30 seconds
 
 
     [Header("Enemy Spawning Settings")]
@@ -34,15 +34,15 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int currentEnemyCount;
     [SerializeField, Range(1, 5000)] private int maxEnemyCount = 50;
 
-    void OnEnable()
+    private void OnEnable()
     {
         Enemy.OnEnemyDied += DecrementCount;
     }
-    void OnDisable()
+    private void OnDisable()
     {
         Enemy.OnEnemyDied -= DecrementCount;
     }
-    void Awake()
+    private void Awake()
     {
         mainCamera = Camera.main;
         cameraHeight = 2f * mainCamera.orthographicSize;
@@ -50,14 +50,14 @@ public class EnemySpawner : MonoBehaviour
         minSpawnDistance = Mathf.Sqrt(Mathf.Pow(cameraWidth / 2, 2) + Mathf.Pow(cameraHeight / 2, 2));
 
     }
-    void Start()
+    private void Start()
     {
         StartCoroutine(EnemySpawnLoop());
         // StartCoroutine(WaveSpawnLoop());
         // StartCoroutine(BossSpawnLoop());
     }
 
-    void Update()
+    private void Update()
     {
         gameTime = Time.time;
         if (spawnInterval > maxSpawnRate)
@@ -79,7 +79,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 yield break;
             }
-            yield return _enemySpawnStagger; // small delay between spawns (tried to prevent lag spike)
+            yield return EnemySpawnStagger; // small delay between spawns (tried to prevent lag spike)
             GameObject enemyObj = ObjectPoolManager.SpawnObject(enemyVariants[enemyIndex], spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Enemies);
             if (!enemyObj.TryGetComponent(out Enemy enemy))
             {
@@ -111,7 +111,7 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            yield return _bossSpawnInterval; // spawn a boss every 5 minutes
+            yield return BossSpawnInterval; // spawn a boss every 5 minutes
             SpawnBoss();
         }
     }
@@ -129,7 +129,7 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            yield return _waveSpawnInterval; // spawn a wave every 30 seconds
+            yield return WaveSpawnInterval; // spawn a wave every 30 seconds
             SpawnWave();
         }
     }

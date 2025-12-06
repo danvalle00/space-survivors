@@ -7,7 +7,7 @@ public class TargetedAOEStrategy : IShootStrategy
         float aoeRadius = context.weaponInstance.GetStat(WeaponStatType.AoeRadius);
         Vector2 enemyPos = context.targetPosition;
         GameObject aoePrefab = context.weaponInstance.weaponData.aoePrefab;
-        if (aoePrefab == null)
+        if (!aoePrefab)
         {
             Debug.LogWarning("TargetedAOEStrategy: No AOE prefab assigned in WeaponData.");
             return;

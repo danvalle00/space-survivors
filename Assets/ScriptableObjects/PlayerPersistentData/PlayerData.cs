@@ -23,7 +23,7 @@ public class PlayerData : ScriptableObject
     public float projectileSpeedMultiplier;
     public float aoeRadiusMultiplier;
     public int quantityMultiplier;
-    public float lifestealMultiplier;
+    public float lifeStealMultiplier;
 
     [Header("Utility Stats")]
     public int skipUpgradeChances;
